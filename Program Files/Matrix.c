@@ -22,6 +22,7 @@ typedef struct matrix {
                                 // array i.e -425.73 has a width of 7 (5 numbers, '.', and '-')
 } Matrix;
 
+
 // the various matrix operations that can be performed
 const char* operations[] = { "multiplication", "addition", "subtraction", "power", "transpose", "determinant",  "inverse" };
 const int numOperations = sizeof(operations) / sizeof(*operations);
