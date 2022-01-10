@@ -7,7 +7,7 @@ Console application written in C for doing matrix calculations.
 - determinant
 - inverse
 
-**Video Demo:**
+**Video Demo:** https://www.youtube.com/watch?v=AC0JP_jkcbw
 
 **Program Files**
 - Main.c - Main program.
