@@ -18,8 +18,7 @@ typedef struct matrix {
 	long double* matrix;        // 2D array
 	int rows;                   // total rows
 	int columns;                // total columns
-	int maxLength;              // max width of a number out of the entire
-                                    // array i.e -425.73 has a width of 7 (5 numbers, '.', and '-')
+	int maxLength;              // max width of a number out of the entire array i.e -425.73 has a width of 7 (5 numbers, '.', and '-')
 } Matrix;
 
 
