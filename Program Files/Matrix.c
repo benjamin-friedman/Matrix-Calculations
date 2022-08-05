@@ -19,7 +19,7 @@ typedef struct matrix {
 	int rows;                   // total rows
 	int columns;                // total columns
 	int maxLength;              // max width of a number out of the entire
-                                // array i.e -425.73 has a width of 7 (5 numbers, '.', and '-')
+                                    // array i.e -425.73 has a width of 7 (5 numbers, '.', and '-')
 } Matrix;
 
 
