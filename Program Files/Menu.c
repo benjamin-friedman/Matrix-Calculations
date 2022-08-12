@@ -1,8 +1,9 @@
 /*
-  Copyright (C) 2021 Benjamin G. Friedman
-  File Description:
-      - Name: Menu.c
-      - Description: Implementation file for the menu interface.
+  Author: Benjamin G. Friedman
+  Date: 05/20/2021
+  File: Menu.c
+  Description:
+      - The implementation file for the menu interface.
 */
 
 
