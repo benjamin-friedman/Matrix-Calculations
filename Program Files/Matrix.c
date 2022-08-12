@@ -1,7 +1,7 @@
 /*
   Author: Benjamin G. Friedman
   Date: 05/20/2021
-  File: Main.c
+  File: Matrix.c
   Description:
       - The implementation file for the matrix interface.
 */
