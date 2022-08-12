@@ -20,7 +20,7 @@ typedef void* MATRIX;                // opaque object handle for matrix objects
 
 // the various matrix operations that can be performed
 extern const char* operations[];
-extern const int numOperations;
+extern const int operationsSize;
 
 
 /*
@@ -30,12 +30,12 @@ POSTCONDITION
   - Returns a handle to a matrix object with the given amount of rows and columns, else NULL for any
     memory allocation failure.
 */
-MATRIX matrix_init(const int rows, const int columns);
+MATRIX matrix_init(int rows, int columns);
 
 
 /*
 PRECONDITION
-  - pRows/pColumns are pointers to the integers to store the dimenions. 
+  - pRows/pColumns are pointers to the integers to store the dimenions.
   - n dicates what the prompt looks like (described in the POSTCONDITION) and is in range [-1, ...).
   - operation is a string that will be printed indicating which matrix operation is being performed.
 POSTCONDITION
@@ -47,11 +47,11 @@ POSTCONDITION
   - Invalid input - Stores -1 in the variables pointed to by pRows/pColumns and returns FAILURE.
   - Valid input is two integers >= 1.
 */
-Status matrix_getDimensions(int* pRows, int* pColumns, const int n, const char* operation);
+Status matrix_getDimensions(int* pRows, int* pColumns, int n, const char* operation);
 
 
 /*
-PRECONDITION 
+PRECONDITION
   - operation is a string that will print indicating whether the function call is for addition or subtraction.
   - pNumMatrices is a pointer to the integer that the number of matrices will be stored in.
 POSTCONDITION
@@ -66,12 +66,13 @@ Status matrix_getNumMatrices(const char* operation, int* pNumMatrices);
 
 /*
 PRECONDITION
-  - rows1/columns1 and rows2/columns2 are the dimensions of two matrices respectively.
+  - columns1/rows2 are the partial dimensions of two matrices respectively
+    (this is all that is needed to see if the two matrices can be multiplied)
 POSTCONDITION
   - Returns TRUE if the two matrices can be multiplied, else FALSE.
   - In order for them to be capable of multiplying, columns1 must equal rows2 i.e. 2 x 3 and 3 x 4.
 */
-Boolean matrix_canBeMultipliedD(const int rows1, const int columns1, const int rows2, const int columns2);
+Boolean matrix_canBeMultipliedD(int columns1, int rows2);
 
 
 /*
@@ -108,7 +109,7 @@ POSTCONDITION
   - Prompts the user to enter values for the matrix based on the dimensions of the matrix.
   - If matrixNumber is 0, it is ignored. If it is 1, 2... it will print "1st" matrix, "2nd" matrix etc.
 */
-void matrix_fillPrompt(MATRIX hMatrix, const int matrixNumber);
+void matrix_fillPrompt(MATRIX hMatrix, int matrixNumber);
 
 
 /*
@@ -117,7 +118,7 @@ PRECONDITION
   - phResult is a pointer to a handle to a valid matrix object or a NULL handle.
 POSTCONDITION
   - The resulting matrix from the multiplication is stored in the handle pointed to by phResult.
-  - Returns SUCCESS, else FAILURE for any memory allocation failure. 
+  - Returns SUCCESS, else FAILURE for any memory allocation failure.
 */
 Status matrix_multiply(MATRIX hMatrix1, MATRIX hMatrix2, MATRIX* phResult);
 
@@ -125,25 +126,25 @@ Status matrix_multiply(MATRIX hMatrix1, MATRIX hMatrix2, MATRIX* phResult);
 /*
 PRECONDITION
   - hMatrices is an array of handles to valid matrix objects all with the same dimensions.
-  - numMatrices is the number of matrices in the array.
+  - hMatricesSize is the number of matrices in the array.
   - phResult is a pointer to a handle to a valid matrix object or a NULL handle.
 POSTCONDITION
   - The resulting matrix from the addition is stored in the handle pointed to by phResult.
   - Returns SUCCESS, else FAILURE for any memory allocation failure.
 */
-Status matrix_add(MATRIX* hMatrices, const int numMatrices, MATRIX* phResult);
+Status matrix_add(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult);
 
 
 /*
 PRECONDITION
   - hMatrices is an array of handles to valid matrix objects all with the same dimensions.
-  - numMatrices is the number of matrices in the array.
+  - hMatricesSize is the number of matrices in the array.
   - phResult is a pointer to a handle to a valid matrix object or a NULL handle.
 POSTCONDITION
   - The resulting matrix from the subtraction is stored in the handle pointed to by phResult.
   - Returns SUCCESS, else FAILURE for any memory allocation failure.
 */
-Status matrix_subtract(MATRIX* hMatrices, const int numMatrices, MATRIX* phResult);
+Status matrix_subtract(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult);
 
 
 /*
@@ -155,7 +156,7 @@ POSTCONDITION
   - The resulting matrix from the power operation is stored in the handle pointed to by phResult.
   - Returns SUCCESS, else FAILURE for any memory allocation failure.
 */
-Status matrix_power(MATRIX hMatrix, const int power, MATRIX* phResult);
+Status matrix_power(MATRIX hMatrix, int power, MATRIX* phResult);
 
 
 /*
@@ -222,7 +223,7 @@ POSTCONDITION
   - In bounds - Returns the entry stored at the given row/column and sets the Boolean pointed to by pOutOfBounds to FALSE.
   - Out of bounds - Returns OUT_OF_BOUNDS and sets the variable pointed to by pOutOfBounds to TRUE.
 */
-long double matrix_getEntry(MATRIX hMatrix, const int row, const int column, Boolean* pOutOfBounds);
+long double matrix_getEntry(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds);
 
 
 /*
@@ -234,7 +235,7 @@ POSTCONDITION
   - In bounds - sets the entry stored at the given row/column and returns SUCCESS.
   - Out of bounds - does nothing with the entry and returns FAILURE.
 */
-Status matrix_setEntry(MATRIX hMatrix, const long double newEntry, const int row, const int column);
+Status matrix_setEntry(MATRIX hMatrix, long double newEntry, int row, int column);
 
 
 /*
