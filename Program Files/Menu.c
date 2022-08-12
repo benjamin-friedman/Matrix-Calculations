@@ -3,7 +3,7 @@
   Date: 05/20/2021
   File: Menu.c
   Description:
-      - Implementation file for the menu interface.
+	  - Implementation file for the menu interface.
 */
 
 
@@ -14,9 +14,9 @@
 
 
 /***** helper functions defined in Matrix.c *****/
-void numberAppender(const int n, char* append);
-Boolean inputIsValidPositiveInt(const char* line, const int expectedNumbers);
-Boolean inputIsValidUnsignedInt(const char* line, const int expectedNumbers);
+void numberAppender(int n, char* append);
+Boolean inputIsValidPositiveInt(const char* line, int expectedNumbers);
+Boolean inputIsValidUnsignedInt(const char* line, int expectedNumbers);
 
 
 /***** helper functions defined in this file *****/
@@ -28,7 +28,7 @@ POSTCONDITION
   - Returns TRUE, else FALSE for any invalid input.
   - Invalid input - Anything other than a single integer in that range of [0, 7]
 */
-Boolean menuChoiceIsValid(const char* line, const int rangeStart, const int rangeEnd);
+Boolean menuChoiceIsValid(const char* line, int rangeStart, int rangeEnd);
 
 
 
@@ -36,7 +36,7 @@ Boolean menuChoiceIsValid(const char* line, const int rangeStart, const int rang
 /***** functions declared in Menu.h *****/
 void menu_displayMenu(void) {
 	printf("------ MENU ------\n");
-	for (int i = 0; i < numOperations; i++)
+	for (int i = 0; i < operationsSize; i++)
 		printf("%d) %s\n", i + 1, operations[i]);
 	printf("0) quit\n\n");
 	printf("Enter the number of the operation to perform or enter 0 to quit.\nChoice: ");
@@ -51,7 +51,7 @@ int menu_getUserChoice(void) {
 	do {
 		fgets(line, 500, stdin);
 		line[strlen(line) - 1] = '\0';
-		validChoice = menuChoiceIsValid(line, 0, numOperations);
+		validChoice = menuChoiceIsValid(line, 0, operationsSize);
 		if (!validChoice) {
 			printf("Input error. Re-enter input.\nChoice: ");
 		}
@@ -89,7 +89,7 @@ Status menu_matrixMultiplication(void) {
 			}
 		} while (!m2ValidInput);
 
-		canBeMultiplied = matrix_canBeMultipliedD(rows1, columns1, rows2, columns2);
+		canBeMultiplied = matrix_canBeMultipliedD(columns1, rows2);
 		if (!canBeMultiplied) {
 			printf("Input error. The columns of matrix 1 must equal the rows of matrix 2 in order "
 				"for two matrices to be multiplied.\nRe-enter the dimensions starting with the first matrix.\n");
@@ -133,7 +133,7 @@ Status menu_matrixMultiplication(void) {
 			else
 				printf("Input error. Re-enter input.\n");
 		}
-		
+
 	} while (!m2ValidInput);
 
 	// implement matrix multiplication
@@ -307,7 +307,7 @@ Status menu_matrixSubtraction(void) {
 				}
 				else
 					printf("Input error. Re-enter input for the %d%s matrix.\n", i + 1, append);
-			}			
+			}
 		} while (!validInput);
 	}
 
@@ -573,6 +573,6 @@ Status menu_matrixInverse(void) {
 
 
 /***** helper functions declared in this file *****/
-Boolean menuChoiceIsValid(const char* line, const int rangeStart, const int rangeEnd) {
+Boolean menuChoiceIsValid(const char* line, int rangeStart, int rangeEnd) {
 	return inputIsValidUnsignedInt(line, 1) && atoi(line) >= rangeStart && atoi(line) <= rangeEnd;
 }
