@@ -3,7 +3,7 @@
   Date: 05/20/2021
   File: Matrix.c
   Description:
-      - Implementation file for the matrix interface.
+	  - Implementation file for the matrix interface.
 */
 
 
@@ -25,7 +25,7 @@ typedef struct matrix {
 
 // the various matrix operations that can be performed
 const char* operations[] = { "multiplication", "addition", "subtraction", "power", "transpose", "determinant",  "inverse" };
-const int numOperations = sizeof(operations) / sizeof(*operations);
+const int operationsSize = sizeof(operations) / sizeof(*operations);
 
 
 /***** helper functions defined in this file *****/
@@ -33,12 +33,12 @@ const int numOperations = sizeof(operations) / sizeof(*operations);
 PRECONDITION
   - n is any integer
   - append is the character array to hold the append string. It has a capacity of 3 with a null terminator
-    at index 2.
+	at index 2.
 POSTCONDITION
   - Based on what n is, append now holds the append string.
-    For example, if n is 21 the append string is "st" for 21st.
+	For example, if n is 21 the append string is "st" for 21st.
 */
-void numberAppender(const int n, char* append);
+void numberAppender(int n, char* append);
 
 
 /*
@@ -46,10 +46,10 @@ PRECONDITION
   - n is any double
 POSTCONDITION
   - Calculates the total number of characters comprising the number.
-    If it's an integer this will just be the length of the integer (i.e. 1024 = length 4).
-    If it's floating point, then it will not include trailing zeros.
+	If it's an integer this will just be the length of the integer (i.e. 1024 = length 4).
+	If it's floating point, then it will not include trailing zeros.
 */
-int calcNumLength(const long double n);
+int calcNumLength(long double n);
 
 
 /*
@@ -57,7 +57,7 @@ PRECONDITION
   - numString is a string containing the string representation of a number.
 POSTCONDITION
   - Removes trailing zeroes from the string representation of a number.
-    For example, the string "24.1720000" becomes "24.172".
+	For example, the string "24.1720000" becomes "24.172".
 */
 void removeTrailingZeroes(char* numString);
 
@@ -67,9 +67,9 @@ PRECONDITION
   - None
 POSTCONDITION
   - Returns the derminant of a 2 x 2 matrix. In a 2 x 2 matrix, the entries
-    a11, a12, a21, and a22 are at indices 00, 01, 10, and 11 respectively.
+	a11, a12, a21, and a22 are at indices 00, 01, 10, and 11 respectively.
 */
-long double calculate2x2determinate(const long double a11, const long double a12, const long double a21, const long double a22);
+long double calculate2x2determinate(long double a11, long double a12, long double a21, long double a22);
 
 
 /*
@@ -81,7 +81,7 @@ POSTCONDITION
   - Returns the determinant of pMatrix and sets the Status pointed to by pMemoryAllocation to SUCCESS.
   - Returns 0 and sets the Status pointed to by pStatus to FAILURE for any memory allocation failure.
   - The mathematical definition of the determinant is recursive so this function implements the recursion.
-    It calls calculate2x2determinate in its base case which returns the determinant of each individual 2 x 2 submatrix.
+	It calls calculate2x2determinate in its base case which returns the determinant of each individual 2 x 2 submatrix.
 */
 long double calculateDeterminate(Matrix* pMatrix, Status* pMemoryAllocation);
 
@@ -92,8 +92,8 @@ PRECONDITION
   - ppMatrix is a pointer to a pointer to a valid matrix object or a pointer that's NULL.
 POSTCONDITION
   - Stores the adjugate of pMatrix in the pointer pointed to by ppMatrix.
-    For a given non-2 x 2 matrix A, the adjugate matrix is the transpose of the matrix of cofactors of A.
-    For a 2 x 2 matrix, the adjugate matrix does not involve the transpose. It is a special case handled separately.
+	For a given non-2 x 2 matrix A, the adjugate matrix is the transpose of the matrix of cofactors of A.
+	For a 2 x 2 matrix, the adjugate matrix does not involve the transpose. It is a special case handled separately.
   - Returns SUCCESS, else FAILURE for any memory allocation failure.
 */
 Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult);
@@ -107,7 +107,7 @@ POSTCONDITION
   - Returns TRUE if the input is valid, else FALSE.
   - Valid input is all valid floating point numbers, and the amount of numbers entered matches expectedNumbers.
 */
-Boolean inputIsValidDouble(const char* line, const int expectedNumbers);
+Boolean inputIsValidDouble(const char* line, int expectedNumbers);
 
 
 /*
@@ -118,7 +118,7 @@ POSTCONDITION
   - Returns TRUE if the input is valid, else FALSE.
   - Valid input is integers > 0, and the amount of integers entered matches expectedNumbers.
 */
-Boolean inputIsValidPositiveInt(const char* line, const int expectedNumbers);
+Boolean inputIsValidPositiveInt(const char* line, int expectedNumbers);
 
 
 /*
@@ -129,20 +129,20 @@ POSTCONDITION
   - Returns TRUE if the input is valid, else FALSE.
   - Valid input is integers >= 0, and the amount of integers entered matches expectedNumbers.
 */
-Boolean inputIsValidUnsignedInt(const char* line, const int expectedNumbers);
+Boolean inputIsValidUnsignedInt(const char* line, int expectedNumbers);
 
 
 /*
 PRECONDITION
   - line is a string containing only floating point numbers.
-  - a is an array of doubles.
+  - aSize is an array of doubles.
   - size is the size of the array a.
 POSTCONDITION
   - The numbers in line are stored as doubles in a and returns SUCCESS.
   - Returns FAILURE if the index of the array goes out of bounds in the case where the amount
-    of numbers in line is greater than size.
+	of numbers in line is greater than size.
 */
-Status linestringToArray(const char* line, long double* a, const int size);
+Status linestringToArray(const char* line, long double* a, int aSize);
 
 
 /*
@@ -152,30 +152,30 @@ PRECONDITION
   - pOutOfBounds is a pointer to a Boolean to check for out of bounds in the array or is NULL.
 POSTCONDITION
   - Since the 2D matrix is implemented as a 1D array, returns the actual index in the 1D array using the row-column coordinates
-    of the conceptual 2D array.
+	of the conceptual 2D array.
   - In bounds - Returns the index and sets the Boolean pointed to by pOutOfBounds to FALSE.
   - Out of bounds - Returns OUT_OF_BOUNDS and sets the Boolean pointed to by pOutOfBounds to TRUE.
   - If pOutOfBounds is NULL, then it is ignored. This is for cases where it's known it won't be out of bounds which happens
-    consistently in this program. The checking for out of bounds is just an additional optional feature.
+	consistently in this program. The checking for out of bounds is just an additional optional feature.
 */
-int at(MATRIX hMatrix, const int row, const int column, Boolean* pOutOfBounds);
+int at(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds);
 
 
-/* 
+/*
 PRECONDITION
   - ppMatrix is a pointer to a pointer to a valid matrix object or a pointer that's NULL.
   - rows/columns are the new dimensions the matrix should be adjusted to.
 POSTCONDITION:
   - If the matrix object does not exist, a new matrix object with the correct dimensions is created.
   - If the matrix exists, its dimensions are checked. If its dimensions are incorrect, a new matrix array
-    is created to adjust it to the proper dimensions.
+	is created to adjust it to the proper dimensions.
   - Returns SUCCESS, else FAILURE for any memory allocation failure.
 */
-Status adjustMatrixDimensions(Matrix** ppMatrix, const int rows, const int columns);
+Status adjustMatrixDimensions(Matrix** ppMatrix, int rows, int columns);
 
 
 /***** functions declared in Matrix.h *****/
-MATRIX matrix_init(const int rows, const int columns) {
+MATRIX matrix_init(int rows, int columns) {
 	Matrix* pMatrix = (Matrix*)malloc(sizeof(*pMatrix));
 	if (pMatrix) {
 		pMatrix->rows = rows;
@@ -191,7 +191,7 @@ MATRIX matrix_init(const int rows, const int columns) {
 }
 
 
-Status matrix_getDimensions(int* pRows, int* pColumns, const int n, const char* operation) {
+Status matrix_getDimensions(int* pRows, int* pColumns, int n, const char* operation) {
 	char append[3] = { '\0' };        // holds "st" for 1st, "nd" for 2nd etc.
 	char line[500];                   // buffer for line of user input
 
@@ -254,7 +254,7 @@ Status matrix_getNumMatrices(const char* operation, int* pNumMatrices) {
 }
 
 
-Boolean matrix_canBeMultipliedD(const int rows1, const int columns1, const int rows2, const int columns2) {
+Boolean matrix_canBeMultipliedD(int columns1, int rows2) {
 	return columns1 == rows2;
 }
 
@@ -267,7 +267,7 @@ Boolean matrix_canBeMultipliedM(MATRIX hMatrix1, MATRIX hMatrix2) {
 
 
 Status matrix_fillInput(MATRIX hMatrix, Status* pMemoryAllocation) {
-	Matrix* pMatrix = (Matrix*)hMatrix;			
+	Matrix* pMatrix = (Matrix*)hMatrix;
 	long double* inputRow;               // array to hold the numbers the user enters for any given row
 	long double* oldArrayCopy;           // stores a copy of the old matrix entries
 	int maxLength = 1;                   // max length of the numbers found
@@ -320,7 +320,7 @@ Status matrix_fillInput(MATRIX hMatrix, Status* pMemoryAllocation) {
 }
 
 
-void matrix_fillPrompt(MATRIX hMatrix, const int matrixNumber) {
+void matrix_fillPrompt(MATRIX hMatrix, int matrixNumber) {
 	Matrix* pMatrix = (Matrix*)hMatrix;
 	char append[3] = { '\0' };
 
@@ -341,7 +341,7 @@ Status matrix_multiply(MATRIX hMatrix1, MATRIX hMatrix2, MATRIX* phResult) {
 	if (!adjustMatrixDimensions((Matrix**)phResult, pMatrix1->rows, pMatrix2->columns))
 		return FAILURE;
 	Matrix* pResult = (Matrix*)*phResult;        // result of multiplication
-	
+
 	long double sum = 0;               // the sum for each new entry in the result matrix
 	int newRow = 0;                    // index tracker of the new matrix's row
 	int newColumn = 0;                 // index tracker of the new matrix's column
@@ -375,7 +375,7 @@ Status matrix_multiply(MATRIX hMatrix1, MATRIX hMatrix2, MATRIX* phResult) {
 }
 
 
-Status matrix_add(MATRIX* hMatrices, const int numMatrices, MATRIX* phResult) {
+Status matrix_add(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult) {
 	Matrix* pMatrixToAdd = (Matrix*)hMatrices[0];        // first matrix being added
 
 	// recreate the result matrix if its dimensions aren't appropriate for the addition or it's NULL
@@ -387,14 +387,14 @@ Status matrix_add(MATRIX* hMatrices, const int numMatrices, MATRIX* phResult) {
 	int maxLength = 1;                 // max length of the new matrix (same as in the matrix structure).
 	int numLength;                     // gets the length of each number to be compared to max length
 	Boolean firstNewNum = TRUE;        // TRUE = first number being calculated in the whole result matrix
-	
+
 	// perform the addition
 	// outer 2 loops for result matrix
 	for (int resultRow = 0; resultRow < pMatrixToAdd->rows; resultRow++) {
 		for (int resultColumn = 0; resultColumn < pMatrixToAdd->columns; resultColumn++) {
 			// inner loop to get the sum
 			sum = 0;
-			for (int i = 0; i < numMatrices; i++) {
+			for (int i = 0; i < hMatricesSize; i++) {
 				pMatrixToAdd = (Matrix*)hMatrices[i];
 				sum += pMatrixToAdd->matrix[at(hMatrices[i], resultRow, resultColumn, NULL)];
 			}
@@ -414,7 +414,7 @@ Status matrix_add(MATRIX* hMatrices, const int numMatrices, MATRIX* phResult) {
 }
 
 
-Status matrix_subtract(MATRIX* hMatrices, const int numMatrices, MATRIX* phResult) {
+Status matrix_subtract(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult) {
 	Matrix* pMatrixToSubtract = (Matrix*)hMatrices[0];        // 1st matrix, the matrix being subtracted from
 
 	// recreate the result matrix if its dimensions aren't appropriate for the subtraction or it's NULL
@@ -433,7 +433,7 @@ Status matrix_subtract(MATRIX* hMatrices, const int numMatrices, MATRIX* phResul
 		for (int resultColumn = 0; resultColumn < pMatrixToSubtract->columns; resultColumn++) {
 			// inner loop to get the sum
 			sum = 0;
-			for (int i = 0; i < numMatrices; i++) {
+			for (int i = 0; i < hMatricesSize; i++) {
 				pMatrixToSubtract = (Matrix*)hMatrices[i];
 				if (i == 0)
 					sum += pMatrixToSubtract->matrix[at(hMatrices[i], resultRow, resultColumn, NULL)];
@@ -456,7 +456,7 @@ Status matrix_subtract(MATRIX* hMatrices, const int numMatrices, MATRIX* phResul
 }
 
 
-Status matrix_power(MATRIX hMatrix, const int power, MATRIX* phResult) {
+Status matrix_power(MATRIX hMatrix, int power, MATRIX* phResult) {
 	MATRIX hToMultiply = NULL;        // handles used for power operation
 	MATRIX hTempResult = NULL;
 
@@ -554,7 +554,7 @@ Status matrix_inverse(MATRIX hMatrix, MATRIX* phResult, Boolean* pMatrixIsVertib
 
 	if (!calculateAdjugateMatrix(pMatrix, &pResult))
 		return FAILURE;
-	
+
 	// multiply every term in the adjugate matrix by 1 / determinant - the result of this is the inverse.
 	Boolean firstNewNum = TRUE;        // TRUE = first number being calculated in the whole result matrix
 	long double newTerm;               // each new term after multiply by 1 / determinant
@@ -625,7 +625,7 @@ void matrix_print(MATRIX hMatrix) {
 }
 
 
-long double matrix_getEntry(MATRIX hMatrix, const int row, const int column, Boolean* pOutOfBounds) {
+long double matrix_getEntry(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds) {
 	Matrix* pMatrix = (Matrix*)hMatrix;
 
 	long double entry = pMatrix->matrix[at(hMatrix, row, column, pOutOfBounds)];
@@ -634,7 +634,7 @@ long double matrix_getEntry(MATRIX hMatrix, const int row, const int column, Boo
 }
 
 
-Status matrix_setEntry(MATRIX hMatrix, const long double newEntry, const int row, const int column) {
+Status matrix_setEntry(MATRIX hMatrix, long double newEntry, int row, int column) {
 	Matrix* pMatrix = (Matrix*)hMatrix;
 
 	// out of bounds
@@ -694,7 +694,7 @@ void matrix_destroy(MATRIX* phMatrix) {
 
 
 /***** helper functions declared in this file. *****/
-void numberAppender(const int n, char* append) {
+void numberAppender(int n, char* append) {
 	// special case
 	if (n >= 4 && n <= 20) {
 		append[0] = 't';
@@ -723,7 +723,7 @@ void numberAppender(const int n, char* append) {
 }
 
 
-int calcNumLength(const long double n) {
+int calcNumLength(long double n) {
 	char numString[20];
 	int nInt = (int)floor(n);
 
@@ -756,7 +756,7 @@ void removeTrailingZeroes(char* numString) {
 }
 
 
-long double calculate2x2determinate(const long double a11, const long double a12, const long double a21, const long double a22) {
+long double calculate2x2determinate(long double a11, long double a12, long double a21, long double a22) {
 	return a11 * a22 - a21 * a12;
 }
 
@@ -817,9 +817,9 @@ Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult) {
 
 	// recreate the result matrix if its dimensions aren't appropriate for the adjugate or it's NULL
 	if (!adjustMatrixDimensions(ppResult, pMatrix->rows, pMatrix->columns))
-		return FAILURE;	
+		return FAILURE;
 	Matrix* pResult = *ppResult;
-	
+
 	// special case for 1 x 1 matrix
 	if (pResult->rows == 1 && pResult->columns == 1) {
 		pResult->matrix[0] = (pMatrix->matrix[0] != 0) ? 1 : 0;
@@ -913,7 +913,7 @@ Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult) {
 		}
 	}
 	pMatrixOfCofactors->maxLength = maxLength;
-		
+
 
 	// calculate the adjugate and clean up memory
 	if (!matrix_transpose(hMatrixOfCofactors, (MATRIX*)ppResult)) {
@@ -927,7 +927,7 @@ Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult) {
 }
 
 
-Boolean inputIsValidDouble(const char* line, const int expectedNumbers) {
+Boolean inputIsValidDouble(const char* line, int expectedNumbers) {
 	Boolean negativeAlreadyExists = FALSE;
 	Boolean decimalPointAlreadyExists = FALSE;
 
@@ -1017,7 +1017,7 @@ Boolean inputIsValidDouble(const char* line, const int expectedNumbers) {
 }
 
 
-Boolean inputIsValidPositiveInt(const char* line, const int expectedNumbers) {
+Boolean inputIsValidPositiveInt(const char* line, int expectedNumbers) {
 	// user only pressed "enter" or whitespace followed by "enter" - space is the only valid whitespace character
 	int i = 0;
 	while (isspace(line[i])) {
@@ -1061,7 +1061,7 @@ Boolean inputIsValidPositiveInt(const char* line, const int expectedNumbers) {
 }
 
 
-Boolean inputIsValidUnsignedInt(const char* line, const int expectedNumbers) {
+Boolean inputIsValidUnsignedInt(const char* line, int expectedNumbers) {
 	// user only pressed "enter" or whitespace followed by "enter" - space is the only valid whitespace character
 	int i = 0;
 	while (isspace(line[i])) {
@@ -1096,7 +1096,7 @@ Boolean inputIsValidUnsignedInt(const char* line, const int expectedNumbers) {
 }
 
 
-Status linestringToArray(const char* line, long double* a, const int size) {
+Status linestringToArray(const char* line, long double* a, int aSize) {
 	char singleNum[50];        // buffer to hold a single number from the line
 	int i = 0;                 // index for line
 	int j = 0;                 // index for singleNum
@@ -1107,7 +1107,7 @@ Status linestringToArray(const char* line, long double* a, const int size) {
 			singleNum[j++] = line[i++];
 		}
 		singleNum[j] = '\0';
-		if (k >= size)
+		if (k >= aSize)
 			return FAILURE;
 		a[k++] = (long double)strtod(singleNum, NULL);
 		if (line[i] != '\0') {
@@ -1119,7 +1119,7 @@ Status linestringToArray(const char* line, long double* a, const int size) {
 }
 
 
-int at(MATRIX hMatrix, const int row, const int column, Boolean* pOutOfBounds) {
+int at(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds) {
 	Matrix* pMatrix = (Matrix*)hMatrix;
 
 	// out of bounds
@@ -1137,7 +1137,7 @@ int at(MATRIX hMatrix, const int row, const int column, Boolean* pOutOfBounds) {
 }
 
 
-Status adjustMatrixDimensions(Matrix** ppMatrix, const int rows, const int columns) {
+Status adjustMatrixDimensions(Matrix** ppMatrix, int rows, int columns) {
 	Matrix* pMatrix = (Matrix*)*ppMatrix;
 	MATRIX hNewMatrix;
 	long double* matrix;
