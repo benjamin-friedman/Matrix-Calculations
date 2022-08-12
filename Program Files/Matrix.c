@@ -287,11 +287,12 @@ Status matrix_fillInput(MATRIX hMatrix, Status* pMemoryAllocation) {
 		free(inputRow);
 		return FAILURE;
 	}
-	for (int i = 0; i < pMatrix->rows * pMatrix->columns; i++)
+
+	for (int i = 0; i < pMatrix->rows * pMatrix->columns; ++i)
 		oldArrayCopy[i] = pMatrix->matrix[i];
 
 	// get and validate user input for the entries of the matrix
-	for (int i = 0; i < pMatrix->rows; i++) {
+	for (int i = 0; i < pMatrix->rows; ++i) {
 		fgets(line, 500, stdin);
 		line[strlen(line) - 1] = '\0';
 		if (!inputIsValidDouble(line, pMatrix->columns)) {
@@ -301,7 +302,7 @@ Status matrix_fillInput(MATRIX hMatrix, Status* pMemoryAllocation) {
 			return FAILURE;
 		}
 		linestringToArray(line, inputRow, pMatrix->columns);
-		for (int j = 0; j < pMatrix->columns; j++) {
+		for (int j = 0; j < pMatrix->columns; ++j) {
 			pMatrix->matrix[at(hMatrix, i, j, NULL)] = inputRow[j];
 			numLength = calcNumLength(inputRow[j]);
 			if (i == 0 && j == 0)
@@ -350,11 +351,11 @@ Status matrix_multiply(MATRIX hMatrix1, MATRIX hMatrix2, MATRIX* phResult) {
 	Boolean firstNewNum = TRUE;        // TRUE = first number being calculated in the whole result matrix
 
 	// perform the multiplication
-	for (int m1row = 0; m1row < pMatrix1->rows; m1row++) {
+	for (int m1row = 0; m1row < pMatrix1->rows; ++m1row) {
 		newColumn = 0;
-		for (int m2column = 0; m2column < pMatrix2->columns; m2column++) {
+		for (int m2column = 0; m2column < pMatrix2->columns; ++m2column) {
 			sum = 0;
-			for (int m1column = 0, m2row = 0; m1column < pMatrix1->columns; m1column++, m2row++) {
+			for (int m1column = 0, m2row = 0; m1column < pMatrix1->columns; ++m1column, ++m2row) {
 				sum += pMatrix1->matrix[at(hMatrix1, m1row, m1column, NULL)] * pMatrix2->matrix[at(hMatrix2, m2row, m2column, NULL)];
 			}
 			numLength = calcNumLength(sum);
@@ -365,9 +366,9 @@ Status matrix_multiply(MATRIX hMatrix1, MATRIX hMatrix2, MATRIX* phResult) {
 			else if (numLength > maxLength)
 				maxLength = numLength;
 			pResult->matrix[at((MATRIX)pResult, newRow, newColumn, NULL)] = sum;
-			newColumn++;
+			++newColumn;
 		}
-		newRow++;
+		++newRow;
 	}
 	pResult->maxLength = maxLength;
 
@@ -390,11 +391,11 @@ Status matrix_add(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult) {
 
 	// perform the addition
 	// outer 2 loops for result matrix
-	for (int resultRow = 0; resultRow < pMatrixToAdd->rows; resultRow++) {
-		for (int resultColumn = 0; resultColumn < pMatrixToAdd->columns; resultColumn++) {
+	for (int resultRow = 0; resultRow < pMatrixToAdd->rows; ++resultRow) {
+		for (int resultColumn = 0; resultColumn < pMatrixToAdd->columns; ++resultColumn) {
 			// inner loop to get the sum
 			sum = 0;
-			for (int i = 0; i < hMatricesSize; i++) {
+			for (int i = 0; i < hMatricesSize; ++i) {
 				pMatrixToAdd = (Matrix*)hMatrices[i];
 				sum += pMatrixToAdd->matrix[at(hMatrices[i], resultRow, resultColumn, NULL)];
 			}
@@ -429,11 +430,11 @@ Status matrix_subtract(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult) {
 
 	// perform the subtraction
 	// outer 2 loops for result matrix
-	for (int resultRow = 0; resultRow < pMatrixToSubtract->rows; resultRow++) {
-		for (int resultColumn = 0; resultColumn < pMatrixToSubtract->columns; resultColumn++) {
+	for (int resultRow = 0; resultRow < pMatrixToSubtract->rows; ++resultRow) {
+		for (int resultColumn = 0; resultColumn < pMatrixToSubtract->columns; ++resultColumn) {
 			// inner loop to get the sum
 			sum = 0;
-			for (int i = 0; i < hMatricesSize; i++) {
+			for (int i = 0; i < hMatricesSize; ++i) {
 				pMatrixToSubtract = (Matrix*)hMatrices[i];
 				if (i == 0)
 					sum += pMatrixToSubtract->matrix[at(hMatrices[i], resultRow, resultColumn, NULL)];
@@ -478,7 +479,7 @@ Status matrix_power(MATRIX hMatrix, int power, MATRIX* phResult) {
 	if (!matrix_multiply(hMatrix, hMatrix, &hToMultiply))
 		return FAILURE;
 	// do all other multiplications thereafter
-	for (int i = 3; i <= power; i++) {
+	for (int i = 3; i <= power; ++i) {
 		if (!matrix_multiply(hMatrix, hToMultiply, &hTempResult)) {
 			matrix_destroy(&hToMultiply);
 			return FAILURE;
@@ -508,10 +509,9 @@ Status matrix_transpose(MATRIX hMatrix, MATRIX* phResult) {
 	Matrix* pResult = (Matrix*)*phResult;        // result of the transpose operation
 
 	// calculate the transpose
-	for (int i = 0; i < pMatrix->rows; i++) {
-		for (int j = 0; j < pMatrix->columns; j++) {
+	for (int i = 0; i < pMatrix->rows; ++i) {
+		for (int j = 0; j < pMatrix->columns; ++j)
 			pResult->matrix[at((MATRIX)pResult, j, i, NULL)] = pMatrix->matrix[at((MATRIX)pMatrix, i, j, NULL)];
-		}
 	}
 	pResult->maxLength = pMatrix->maxLength;
 
@@ -561,7 +561,7 @@ Status matrix_inverse(MATRIX hMatrix, MATRIX* phResult, Boolean* pMatrixIsVertib
 	int maxLength = 1;                 // max length of the new matrix (same as in the matrix structure).
 	int numLength;                     // gets the length of each number to be compared to max length
 
-	for (int i = 0; i < pResult->rows * pResult->columns; i++) {
+	for (int i = 0; i < pResult->rows * pResult->columns; ++i) {
 		newTerm = pResult->matrix[i] / determinant;
 		numLength = calcNumLength(newTerm);
 		if (firstNewNum) {
@@ -595,12 +595,12 @@ void matrix_print(MATRIX hMatrix) {
 	int totalSpaces = spacesPerNum * pMatrix->columns + pMatrix->columns + 1;
 
 	// print the matrix
-	for (int i = 0; i < totalSpaces; i++)
+	for (int i = 0; i < totalSpaces; ++i)
 		printf("-");
 	printf("\n");
 
-	for (int i = 0; i < pMatrix->rows; i++) {
-		for (int j = 0; j < pMatrix->columns; j++) {
+	for (int i = 0; i < pMatrix->rows; ++i) {
+		for (int j = 0; j < pMatrix->columns; ++j) {
 			long double num = pMatrix->matrix[at(hMatrix, i, j, NULL)];
 			sprintf(numString, "%Lf", num);
 			removeTrailingZeroes(numString);
@@ -617,7 +617,7 @@ void matrix_print(MATRIX hMatrix) {
 				printf("|");
 		}
 		printf("\n");
-		for (int i = 0; i < totalSpaces; i++)
+		for (int i = 0; i < totalSpaces; ++i)
 			printf("-");
 		printf("\n");
 	}
@@ -673,7 +673,7 @@ Status matrix_assignment(MATRIX hMatrix, MATRIX* phResult) {
 
 	// copy the matrix entries
 	int matrixSize = pMatrix->rows * pMatrix->columns;
-	for (int i = 0; i < matrixSize; i++)
+	for (int i = 0; i < matrixSize; ++i)
 		pResult->matrix[i] = pMatrix->matrix[i];
 	pResult->maxLength = pMatrix->maxLength;
 
@@ -773,7 +773,7 @@ long double calculateDeterminate(Matrix* pMatrix, Status* pMemoryAllocation) {
 
 	// all other cases: recursive calculation
 	long double sum = 0;
-	for (int column = 0; column < pMatrix->columns; column++) {
+	for (int column = 0; column < pMatrix->columns; ++column) {
 		// create the recursive submatrix
 		MATRIX hSubMatrix = matrix_init(pMatrix->rows - 1, pMatrix->columns - 1);
 		if (!hSubMatrix) {
@@ -788,15 +788,15 @@ long double calculateDeterminate(Matrix* pMatrix, Status* pMemoryAllocation) {
 		int subMatrix_row = 0;
 		int subMatrix_column = 0;
 		// get the recursive submatrix
-		for (int row = 1; row < pMatrix->rows; row++) {
+		for (int row = 1; row < pMatrix->rows; ++row) {
 			subMatrix_column = 0;
-			for (int _column = 0; _column < pMatrix->columns; _column++) {
+			for (int _column = 0; _column < pMatrix->columns; ++_column) {
 				if (_column == column)
 					continue;
 				pSubMatrix->matrix[at(hSubMatrix, subMatrix_row, subMatrix_column, NULL)] = pMatrix->matrix[at((MATRIX)pMatrix, row, _column, NULL)];
-				subMatrix_column++;
+				++subMatrix_column;
 			}
-			subMatrix_row++;
+			++subMatrix_row;
 		}
 
 		if (column % 2 == 0) {
@@ -827,7 +827,7 @@ Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult) {
 	}
 	// special case for a 2 x 2 matrix
 	else if (pResult->rows == 2 && pResult->columns == 2) {
-		for (int i = 0; i < pResult->rows * pResult->columns; i++)
+		for (int i = 0; i < pResult->rows * pResult->columns; ++i)
 			pResult->matrix[i] = pMatrix->matrix[i];
 		pResult->matrix[at((MATRIX)pResult, 0, 1, NULL)] *= -1;
 		pResult->matrix[at((MATRIX)pResult, 1, 0, NULL)] *= -1;
@@ -862,8 +862,8 @@ Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult) {
 	Boolean firstNewNum = TRUE;        // TRUE = first number being calculated in the whole result matrix
 	long double newTerm;               // each new term after multiplying by 1 / determinant
 
-	for (int row = 0; row < pMatrix->rows; row++) {
-		for (int column = 0; column < pMatrix->columns; column++) {
+	for (int row = 0; row < pMatrix->rows; ++row) {
+		for (int column = 0; column < pMatrix->columns; ++column) {
 			// create the recursive submatrix
 			MATRIX hSubMatrix = matrix_init(pMatrix->rows - 1, pMatrix->columns - 1);
 			if (!hSubMatrix) {
@@ -875,17 +875,17 @@ Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult) {
 			// get the submatrix
 			int subMatrix_row = 0;
 			int subMatrix_column = 0;
-			for (int _row = 0; _row < pMatrix->rows; _row++) {
+			for (int _row = 0; _row < pMatrix->rows; ++_row) {
 				if (_row == row)
 					continue;
 				subMatrix_column = 0;
-				for (int _column = 0; _column < pMatrix->columns; _column++) {
+				for (int _column = 0; _column < pMatrix->columns; ++_column) {
 					if (_column == column)
 						continue;
 					pSubMatrix->matrix[at(hSubMatrix, subMatrix_row, subMatrix_column, NULL)] = pMatrix->matrix[at((MATRIX)pMatrix, _row, _column, NULL)];
-					subMatrix_column++;
+					++subMatrix_column;
 				}
-				subMatrix_row++;
+				++subMatrix_row;
 			}
 
 			// get the i, jth entry in the matrix of cofactors
@@ -936,7 +936,7 @@ Boolean inputIsValidDouble(const char* line, int expectedNumbers) {
 	while (isspace(line[i])) {
 		if (line[i] != ' ')
 			return FALSE;
-		i++;
+		++i;
 	}
 	if (line[i] == '\0')
 		return FALSE;
@@ -997,7 +997,7 @@ Boolean inputIsValidDouble(const char* line, int expectedNumbers) {
 			}
 		}
 
-		i++;
+		++i;
 	}
 
 
@@ -1005,12 +1005,11 @@ Boolean inputIsValidDouble(const char* line, int expectedNumbers) {
 	i = 0;
 	int totalNumbers = 0;
 	while (line[i] != '\0') {
-		while (line[i] != ' ' && line[i] != '\0') {
-			i++;
-		}
-		totalNumbers++;
+		while (line[i] != ' ' && line[i] != '\0')
+			++i;
+		++totalNumbers;
 		if (line[i] != '\0')
-			i++;
+			++i;
 	}
 
 	return totalNumbers == expectedNumbers;
@@ -1023,7 +1022,7 @@ Boolean inputIsValidPositiveInt(const char* line, int expectedNumbers) {
 	while (isspace(line[i])) {
 		if (line[i] != ' ')
 			return FALSE;
-		i++;
+		++i;
 	}
 	if (line[i] == '\0')
 		return FALSE;
@@ -1033,7 +1032,7 @@ Boolean inputIsValidPositiveInt(const char* line, int expectedNumbers) {
 		// something other than a digit or space
 		if (!isdigit(line[i]) && line[i] != ' ')
 			return FALSE;
-		i++;
+		++i;
 	}
 
 
@@ -1044,17 +1043,16 @@ Boolean inputIsValidPositiveInt(const char* line, int expectedNumbers) {
 	int totalNumbers = 0;
 	i = 0;
 	while (line[i] != '\0') {
-		while (line[i] != ' ' && line[i] != '\0') {
+		while (line[i] != ' ' && line[i] != '\0')
 			singleNumStr[idx++] = line[i++];
-		}
 		singleNumStr[idx] = '\0';
 		idx = 0;
 		singleNumInt = atoi(singleNumStr);
 		if (singleNumInt == 0)
 			return FALSE;
-		totalNumbers++;
+		++totalNumbers;
 		if (line[i] != '\0')
-			i++;
+			++i;
 	}
 
 	return totalNumbers == expectedNumbers;
@@ -1067,7 +1065,7 @@ Boolean inputIsValidUnsignedInt(const char* line, int expectedNumbers) {
 	while (isspace(line[i])) {
 		if (line[i] != ' ')
 			return FALSE;
-		i++;
+		++i;
 	}
 	if (line[i] == '\0')
 		return FALSE;
@@ -1077,19 +1075,18 @@ Boolean inputIsValidUnsignedInt(const char* line, int expectedNumbers) {
 		// something other than a digit or space
 		if (!isdigit(line[i]) && line[i] != ' ')
 			return FALSE;
-		i++;
+		++i;
 	}
 
 	// input has been validated - now verify an appropriate amount of numbers has been entered
 	int totalNumbers = 0;
 	i = 0;
 	while (line[i] != '\0') {
-		while (line[i] != ' ' && line[i] != '\0') {
-			i++;
-		}
-		totalNumbers++;
+		while (line[i] != ' ' && line[i] != '\0')
+			++i;
+		++totalNumbers;
 		if (line[i] != '\0')
-			i++;
+			++i;
 	}
 
 	return totalNumbers == expectedNumbers;
@@ -1103,15 +1100,14 @@ Status linestringToArray(const char* line, long double* a, int aSize) {
 	int k = 0;                 // index for a
 
 	while (line[i] != '\0') {
-		while (line[i] != ' ' && line[i] != '\0') {
+		while (line[i] != ' ' && line[i] != '\0')
 			singleNum[j++] = line[i++];
-		}
 		singleNum[j] = '\0';
 		if (k >= aSize)
 			return FAILURE;
 		a[k++] = (long double)strtod(singleNum, NULL);
 		if (line[i] != '\0') {
-			i++;
+			++i;
 			j = 0;
 		}
 	}
