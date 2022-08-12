@@ -12,7 +12,7 @@
 #include "Menu.h"
 
 
-int main(int argc, char* argv[]) {
+int main(void) {
 	int userChoice;
 	do {
 		menu_displayMenu();
