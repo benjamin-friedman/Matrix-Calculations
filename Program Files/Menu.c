@@ -3,7 +3,7 @@
   Date: 05/20/2021
   File: Menu.c
   Description:
-      - The implementation file for the menu interface.
+      - Implementation file for the menu interface.
 */
 
 
