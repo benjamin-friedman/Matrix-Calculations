@@ -176,7 +176,7 @@ Status adjustMatrixDimensions(Matrix** ppMatrix, int rows, int columns);
 
 /***** functions declared in Matrix.h *****/
 MATRIX matrix_init(int rows, int columns) {
-	Matrix* pMatrix = (Matrix*)malloc(sizeof(*pMatrix));
+	Matrix* pMatrix = malloc(sizeof(*pMatrix));
 	if (pMatrix) {
 		pMatrix->rows = rows;
 		pMatrix->columns = columns;
@@ -187,7 +187,7 @@ MATRIX matrix_init(int rows, int columns) {
 		}
 	}
 
-	return (MATRIX)pMatrix;
+	return pMatrix;
 }
 
 
