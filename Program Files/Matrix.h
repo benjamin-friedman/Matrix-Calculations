@@ -3,7 +3,7 @@
   Date: 05/20/2021
   File: Matrix.h
   Description:
-      - The header file for the matrix interface.
+      - Header file for the matrix interface.
 */
 
 
