@@ -36,7 +36,7 @@ Boolean menuChoiceIsValid(const char* line, int rangeStart, int rangeEnd);
 /***** functions declared in Menu.h *****/
 void menu_displayMenu(void) {
 	printf("------ MENU ------\n");
-	for (int i = 0; i < operationsSize; i++)
+	for (int i = 0; i < operationsSize; ++i)
 		printf("%d) %s\n", i + 1, operations[i]);
 	printf("0) quit\n\n");
 	printf("Enter the number of the operation to perform or enter 0 to quit.\nChoice: ");
@@ -189,7 +189,7 @@ Status menu_matrixAddition(void) {
 		matrix_destroy(&hResult);
 		return FAILURE;
 	}
-	for (int i = 0; i < numMatrices; i++) {
+	for (int i = 0; i < numMatrices; ++i) {
 		if (!(hMatrices[i] = matrix_init(rows, columns))) {
 			if (i > 0) {
 				for (; i >= 0; i--)
@@ -202,7 +202,7 @@ Status menu_matrixAddition(void) {
 	}
 
 	// fill up the entries of the matrix
-	for (int i = 0; i < numMatrices; i++) {
+	for (int i = 0; i < numMatrices; ++i) {
 		numberAppender(i + 1, append);
 		do {
 			matrix_fillPrompt(hMatrices[i], i + 1);
@@ -210,7 +210,7 @@ Status menu_matrixAddition(void) {
 			if (!validInput) {
 				if (!memoryAllocation) {
 					printf("\n\nMemory allocation failure during matrix addition.\n\n");
-					for (int i = 0; i < numMatrices; i++)
+					for (int i = 0; i < numMatrices; ++i)
 						matrix_destroy(&hMatrices[i]);
 					free(hMatrices);
 					matrix_destroy(&hResult);
@@ -224,7 +224,7 @@ Status menu_matrixAddition(void) {
 
 	// implement matrix addition
 	if (!matrix_add(hMatrices, numMatrices, &hResult)) {
-		for (int i = 0; i < numMatrices; i++)
+		for (int i = 0; i < numMatrices; ++i)
 			matrix_destroy(&hMatrices[i]);
 		free(hMatrices);
 		matrix_destroy(&hResult);
@@ -233,13 +233,13 @@ Status menu_matrixAddition(void) {
 
 	// display results and clean up memory
 	printf("The %d matrices being added are:\n", numMatrices);
-	for (int i = 0; i < numMatrices; i++) {
+	for (int i = 0; i < numMatrices; ++i) {
 		matrix_print(hMatrices[i]);
 	}
 	printf("The resulting matrix after addition is:\n");
 	matrix_print(hResult);
 
-	for (int i = 0; i < numMatrices; i++)
+	for (int i = 0; i < numMatrices; ++i)
 		matrix_destroy(&hMatrices[i]);
 	free(hMatrices);
 	matrix_destroy(&hResult);
@@ -278,7 +278,7 @@ Status menu_matrixSubtraction(void) {
 		matrix_destroy(&hResult);
 		return FAILURE;
 	}
-	for (int i = 0; i < numMatrices; i++) {
+	for (int i = 0; i < numMatrices; ++i) {
 		if (!(hMatrices[i] = matrix_init(rows, columns))) {
 			if (i > 0) {
 				for (; i >= 0; i--)
@@ -291,7 +291,7 @@ Status menu_matrixSubtraction(void) {
 	}
 
 	// fill up the entries of the matrices
-	for (int i = 0; i < numMatrices; i++) {
+	for (int i = 0; i < numMatrices; ++i) {
 		numberAppender(i + 1, append);
 		do {
 			matrix_fillPrompt(hMatrices[i], i + 1);
@@ -299,7 +299,7 @@ Status menu_matrixSubtraction(void) {
 			if (!validInput) {
 				if (!memoryAllocation) {
 					printf("\n\nMemory allocation failure during matrix subtraction.\n\n");
-					for (int i = 0; i < numMatrices; i++)
+					for (int i = 0; i < numMatrices; ++i)
 						matrix_destroy(&hMatrices[i]);
 					matrix_destroy(&hResult);
 					free(hMatrices);
@@ -313,7 +313,7 @@ Status menu_matrixSubtraction(void) {
 
 	// implement matrix subtraction
 	if (!matrix_subtract(hMatrices, numMatrices, &hResult)) {
-		for (int i = 0; i < numMatrices; i++)
+		for (int i = 0; i < numMatrices; ++i)
 			matrix_destroy(&hMatrices[i]);
 		matrix_destroy(&hResult);
 		free(hMatrices);
@@ -322,14 +322,14 @@ Status menu_matrixSubtraction(void) {
 
 	// display results and clean up memory
 	printf("The %d matrices being subtracted are:\n", numMatrices);
-	for (int i = 0; i < numMatrices; i++) {
+	for (int i = 0; i < numMatrices; ++i) {
 		matrix_print(hMatrices[i]);
 	}
 	printf("The resulting matrix after subtraction is:\n");
 	matrix_print(hResult);
 
 	matrix_destroy(&hResult);
-	for (int i = 0; i < numMatrices; i++)
+	for (int i = 0; i < numMatrices; ++i)
 		matrix_destroy(&hMatrices[i]);
 	free(hMatrices);
 
