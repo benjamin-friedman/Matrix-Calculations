@@ -1,8 +1,9 @@
 /*
-  Copyright (C) 2021 Benjamin G. Friedman
-  File Description:
-      - Name: Matrix.h
-      - Description: Header file for the matrix interface.
+  Author: Benjamin G. Friedman
+  Date: 05/20/2021
+  File: Matrix.h
+  Description:
+      - The header file for the matrix interface.
 */
 
 
