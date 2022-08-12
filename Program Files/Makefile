@@ -5,9 +5,8 @@
 
 
 CC = gcc
-CFLAGS = -std=c99 -Wall -Wextra -Wpedantic
+CFLAGS = -std=c99 -Wall -Wextra -Wpedantic -Og -g -fsanitize=undefined # comment out -Og... when done debugging
 LDLIBS = -lm
-DEBUG = # -Og -g -fsanitize=undefined # comment out when done debugging
 EXE1 = MatrixCalculations
 OBJ1 = Main.o Matrix.o Menu.o
 EXES = $(EXE1)
@@ -18,12 +17,12 @@ all: $(EXES)
 
 
 $(EXE1): $(OBJ1)
-	$(CC) $(CFLAGS) $(DEBUG) -o $@ $^ $(LDLIBS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDLIBS)
 
 %.o: %.c %.h
-	$(CC) $(CFLAGS) $(DEBUG) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 %.o: %.c
-	$(CC) $(CFLAGS) $(DEBUG) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	-rm $(EXES) $(wildcard *.o)
