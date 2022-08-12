@@ -4,7 +4,7 @@
 # Description: Makefile for the matrix calculations program.
 
 CC = gcc
-CFLAGS = -g -Wall --std=c99
+CFLAGS = -g -Wall -std=c99
 LDLIBS = -lm
 OBJ = Main.o Matrix.o Menu.o
 EXE = MatrixCalculations
