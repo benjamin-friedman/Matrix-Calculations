@@ -1,8 +1,9 @@
 /*
-  Copyright (C) 2021 Benjamin G. Friedman
-  File Description:
-      - Name: Matrix.c
-      - Description: Implementation file for the matrix interface.
+  Author: Benjamin G. Friedman
+  Date: 05/20/2021
+  File: Main.c
+  Description:
+      - The implementation file for the matrix interface.
 */
 
 
