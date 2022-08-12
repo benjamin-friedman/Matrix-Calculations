@@ -1,8 +1,8 @@
 /*
-  Copyright (C) 2021 Benjamin G. Friedman
-  File Description:
-      - Name: Main.c
-      - Description: The main program.
+  Author: Benjamin G. Friedman
+  File: Main.c
+  Description:
+      - The main function for the matrix calculations program.
 */
 
 
