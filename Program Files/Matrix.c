@@ -355,9 +355,8 @@ Status matrix_multiply(MATRIX hMatrix1, MATRIX hMatrix2, MATRIX* phResult) {
 		newColumn = 0;
 		for (int m2column = 0; m2column < pMatrix2->columns; ++m2column) {
 			sum = 0;
-			for (int m1column = 0, m2row = 0; m1column < pMatrix1->columns; ++m1column, ++m2row) {
+			for (int m1column = 0, m2row = 0; m1column < pMatrix1->columns; ++m1column, ++m2row)
 				sum += pMatrix1->matrix[at(hMatrix1, m1row, m1column, NULL)] * pMatrix2->matrix[at(hMatrix2, m2row, m2column, NULL)];
-			}
 			numLength = calcNumLength(sum);
 			if (firstNewNum) {
 				maxLength = numLength;
