@@ -1,6 +1,6 @@
 /*
   Author: Benjamin G. Friedman
-  Date: 05/20/21
+  Date: 05/20/2021
   File: Main.c
   Description:
       - The main function for the matrix calculations program.
