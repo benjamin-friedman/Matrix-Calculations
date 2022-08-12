@@ -3,7 +3,7 @@
   Date: 05/20/2021
   File: Matrix.c
   Description:
-      - The implementation file for the matrix interface.
+      - Implementation file for the matrix interface.
 */
 
 
