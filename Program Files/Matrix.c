@@ -260,14 +260,14 @@ Boolean matrix_canBeMultipliedD(int columns1, int rows2) {
 
 
 Boolean matrix_canBeMultipliedM(MATRIX hMatrix1, MATRIX hMatrix2) {
-	Matrix* pMatrix1 = (Matrix*)hMatrix1;
-	Matrix* pMatrix2 = (Matrix*)hMatrix2;
+	Matrix* pMatrix1 = hMatrix1;
+	Matrix* pMatrix2 = hMatrix2;
 	return pMatrix1->columns == pMatrix2->rows;
 }
 
 
 Status matrix_fillInput(MATRIX hMatrix, Status* pMemoryAllocation) {
-	Matrix* pMatrix = (Matrix*)hMatrix;
+	Matrix* pMatrix = hMatrix;
 	long double* inputRow;               // array to hold the numbers the user enters for any given row
 	long double* oldArrayCopy;           // stores a copy of the old matrix entries
 	int maxLength = 1;                   // max length of the numbers found
@@ -322,7 +322,7 @@ Status matrix_fillInput(MATRIX hMatrix, Status* pMemoryAllocation) {
 
 
 void matrix_fillPrompt(MATRIX hMatrix, int matrixNumber) {
-	Matrix* pMatrix = (Matrix*)hMatrix;
+	Matrix* pMatrix = hMatrix;
 	char append[3] = { '\0' };
 
 	printf("Enter values for the ");
@@ -335,13 +335,13 @@ void matrix_fillPrompt(MATRIX hMatrix, int matrixNumber) {
 
 
 Status matrix_multiply(MATRIX hMatrix1, MATRIX hMatrix2, MATRIX* phResult) {
-	Matrix* pMatrix1 = (Matrix*)hMatrix1;        // matrix 1 being multiplied
-	Matrix* pMatrix2 = (Matrix*)hMatrix2;        // matrix 2 being multiplied
+	Matrix* pMatrix1 = hMatrix1;        // matrix 1 being multiplied
+	Matrix* pMatrix2 = hMatrix2;        // matrix 2 being multiplied
 
 	// recreate the result matrix if its dimensions aren't appropriate for the multiplication or it's NULL
 	if (!adjustMatrixDimensions((Matrix**)phResult, pMatrix1->rows, pMatrix2->columns))
 		return FAILURE;
-	Matrix* pResult = (Matrix*)*phResult;        // result of multiplication
+	Matrix* pResult = *phResult;       // result of multiplication
 
 	long double sum = 0;               // the sum for each new entry in the result matrix
 	int newRow = 0;                    // index tracker of the new matrix's row
@@ -376,12 +376,12 @@ Status matrix_multiply(MATRIX hMatrix1, MATRIX hMatrix2, MATRIX* phResult) {
 
 
 Status matrix_add(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult) {
-	Matrix* pMatrixToAdd = (Matrix*)hMatrices[0];        // first matrix being added
+	Matrix* pMatrixToAdd = hMatrices[0];        // first matrix being added
 
 	// recreate the result matrix if its dimensions aren't appropriate for the addition or it's NULL
 	if (!adjustMatrixDimensions((Matrix**)phResult, pMatrixToAdd->rows, pMatrixToAdd->columns))
 		return FAILURE;
-	Matrix* pResult = (Matrix*)*phResult;        // result of addition
+	Matrix* pResult = *phResult;       // result of addition
 
 	long double sum = 0;               // sum for each new individual term
 	int maxLength = 1;                 // max length of the new matrix (same as in the matrix structure).
@@ -395,7 +395,7 @@ Status matrix_add(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult) {
 			// inner loop to get the sum
 			sum = 0;
 			for (int i = 0; i < hMatricesSize; ++i) {
-				pMatrixToAdd = (Matrix*)hMatrices[i];
+				pMatrixToAdd = hMatrices[i];
 				sum += pMatrixToAdd->matrix[at(hMatrices[i], resultRow, resultColumn, NULL)];
 			}
 			numLength = calcNumLength(sum);
@@ -415,12 +415,12 @@ Status matrix_add(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult) {
 
 
 Status matrix_subtract(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult) {
-	Matrix* pMatrixToSubtract = (Matrix*)hMatrices[0];        // 1st matrix, the matrix being subtracted from
+	Matrix* pMatrixToSubtract = hMatrices[0];        // 1st matrix, the matrix being subtracted from
 
 	// recreate the result matrix if its dimensions aren't appropriate for the subtraction or it's NULL
 	if (!adjustMatrixDimensions((Matrix**)phResult, pMatrixToSubtract->rows, pMatrixToSubtract->columns))
 		return FAILURE;
-	Matrix* pResult = (Matrix*)*phResult;        // result of subtraction
+	Matrix* pResult = *phResult;       // result of subtraction
 
 	long double sum = 0;               // sum for each new individual term
 	int maxLength = 1;                 // max length of the new matrix (same as in the matrix structure).
@@ -434,7 +434,7 @@ Status matrix_subtract(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult) {
 			// inner loop to get the sum
 			sum = 0;
 			for (int i = 0; i < hMatricesSize; ++i) {
-				pMatrixToSubtract = (Matrix*)hMatrices[i];
+				pMatrixToSubtract = hMatrices[i];
 				if (i == 0)
 					sum += pMatrixToSubtract->matrix[at(hMatrices[i], resultRow, resultColumn, NULL)];
 				else
@@ -488,7 +488,7 @@ Status matrix_power(MATRIX hMatrix, int power, MATRIX* phResult) {
 		hTempResult = NULL;
 	}
 
-	Matrix* pResult = (Matrix*)*phResult;
+	Matrix* pResult = *phResult;
 	if (pResult) {
 		free(pResult->matrix);
 		free(pResult);
@@ -500,12 +500,12 @@ Status matrix_power(MATRIX hMatrix, int power, MATRIX* phResult) {
 
 
 Status matrix_transpose(MATRIX hMatrix, MATRIX* phResult) {
-	Matrix* pMatrix = (Matrix*)hMatrix;        // the matrix being transposed
+	Matrix* pMatrix = hMatrix;        // the matrix being transposed
 
 	// recreate the result matrix if its dimensions aren't appropriate for the transpose or it's NULL
 	if (!adjustMatrixDimensions((Matrix**)phResult, pMatrix->columns, pMatrix->rows))
 		return FAILURE;
-	Matrix* pResult = (Matrix*)*phResult;        // result of the transpose operation
+	Matrix* pResult = *phResult;        // result of the transpose operation
 
 	// calculate the transpose
 	for (int i = 0; i < pMatrix->rows; ++i) {
@@ -519,7 +519,7 @@ Status matrix_transpose(MATRIX hMatrix, MATRIX* phResult) {
 
 
 long double matrix_determinant(MATRIX hMatrix, Status* pMemoryAllocation) {
-	Matrix* pMatrix = (Matrix*)hMatrix;
+	Matrix* pMatrix = hMatrix;
 	*pMemoryAllocation = SUCCESS;
 
 	// the determinant of a 1 x 1 matrix is just the single number in the matrix
@@ -532,7 +532,7 @@ long double matrix_determinant(MATRIX hMatrix, Status* pMemoryAllocation) {
 
 
 Status matrix_inverse(MATRIX hMatrix, MATRIX* phResult, Boolean* pMatrixIsVertible) {
-	Matrix* pMatrix = (Matrix*)hMatrix;        // the matrix to be inverted
+	Matrix* pMatrix = hMatrix;                 // the matrix to be inverted
 	Status memoryAllocation;                   // checks for memory allocation failure
 	long double determinant;                   // the result of the determinant operation
 	*pMatrixIsVertible = TRUE;                 // assume the matrix is vertible
@@ -540,7 +540,7 @@ Status matrix_inverse(MATRIX hMatrix, MATRIX* phResult, Boolean* pMatrixIsVertib
 	// recreate the result matrix if its dimensions aren't appropriate for the inverse operation or it's NULL
 	if (!adjustMatrixDimensions((Matrix**)phResult, pMatrix->rows, pMatrix->columns))
 		return FAILURE;
-	Matrix* pResult = (Matrix*)*phResult;        // result of the inverse operation
+	Matrix* pResult = *phResult;        // result of the inverse operation
 
 	// implement the determinant operation and check for memory allocation failure/determinant doesn't exist
 	determinant = matrix_determinant(hMatrix, &memoryAllocation);
@@ -578,14 +578,14 @@ Status matrix_inverse(MATRIX hMatrix, MATRIX* phResult, Boolean* pMatrixIsVertib
 
 
 Boolean matrix_canBeAdded(MATRIX hMatrix1, MATRIX hMatrix2) {
-	Matrix* pMatrix1 = (Matrix*)hMatrix1;
-	Matrix* pMatrix2 = (Matrix*)hMatrix2;
+	Matrix* pMatrix1 = hMatrix1;
+	Matrix* pMatrix2 = hMatrix2;
 	return pMatrix1->rows == pMatrix2->rows && pMatrix1->columns == pMatrix2->columns;
 }
 
 
 void matrix_print(MATRIX hMatrix) {
-	Matrix* pMatrix = (Matrix*)hMatrix;
+	Matrix* pMatrix = hMatrix;
 	char numString[500];                              // buffer to hold each number as a string
 	int extraSpaces;                                  // will count how many extra spaces to print for each number
 	int spacesPerNum = pMatrix->maxLength + 2;        // each number occupies the same fixed space
@@ -625,7 +625,7 @@ void matrix_print(MATRIX hMatrix) {
 
 
 long double matrix_getEntry(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds) {
-	Matrix* pMatrix = (Matrix*)hMatrix;
+	Matrix* pMatrix = hMatrix;
 
 	long double entry = pMatrix->matrix[at(hMatrix, row, column, pOutOfBounds)];
 
@@ -634,7 +634,7 @@ long double matrix_getEntry(MATRIX hMatrix, int row, int column, Boolean* pOutOf
 
 
 Status matrix_setEntry(MATRIX hMatrix, long double newEntry, int row, int column) {
-	Matrix* pMatrix = (Matrix*)hMatrix;
+	Matrix* pMatrix = hMatrix;
 
 	// out of bounds
 	if (row >= pMatrix->rows || column >= pMatrix->columns)
@@ -648,8 +648,8 @@ Status matrix_setEntry(MATRIX hMatrix, long double newEntry, int row, int column
 
 
 Status matrix_assignment(MATRIX hMatrix, MATRIX* phResult) {
-	Matrix* pMatrix = (Matrix*)hMatrix;
-	Matrix* pResult = (Matrix*)*phResult;
+	Matrix* pMatrix = hMatrix;
+	Matrix* pResult = *phResult;
 	MATRIX hNewMatrix = NULL;
 	long double* matrix;
 
@@ -658,7 +658,7 @@ Status matrix_assignment(MATRIX hMatrix, MATRIX* phResult) {
 		if (!(hNewMatrix = matrix_init(pMatrix->rows, pMatrix->columns)))
 			return FAILURE;
 		*phResult = hNewMatrix;
-		pResult = (Matrix*)*phResult;
+		pResult = *phResult;
 	}
 	// the matrix object exists but its dimensions are incorrect
 	else if (pResult->rows != pMatrix->rows || pResult->columns != pMatrix->columns) {
@@ -681,7 +681,7 @@ Status matrix_assignment(MATRIX hMatrix, MATRIX* phResult) {
 
 
 void matrix_destroy(MATRIX* phMatrix) {
-	Matrix* pMatrix = (Matrix*)*phMatrix;
+	Matrix* pMatrix = *phMatrix;
 	if (pMatrix) {
 		free(pMatrix->matrix);
 		free(pMatrix);
@@ -779,7 +779,7 @@ long double calculateDeterminate(Matrix* pMatrix, Status* pMemoryAllocation) {
 			*pMemoryAllocation = FAILURE;
 			return 0;
 		}
-		Matrix* pSubMatrix = (Matrix*)hSubMatrix;
+		Matrix* pSubMatrix = hSubMatrix;
 
 		// get one part of the recursive sum
 		// get the a_1_jth entry
@@ -853,7 +853,7 @@ Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult) {
 	if (!(hMatrixOfCofactors = matrix_init(pMatrix->columns, pMatrix->rows))) {
 		return FAILURE;
 	}
-	Matrix* pMatrixOfCofactors = (Matrix*)hMatrixOfCofactors;
+	Matrix* pMatrixOfCofactors = hMatrixOfCofactors;
 	// calculate each entry for the matrix of cofactors
 	Status memoryAllocation;           // checks for memory allocation failure
 	int maxLength = 1;                 // max length of the new matrix (same as in the matrix structure).
@@ -869,7 +869,7 @@ Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult) {
 				matrix_destroy(&hMatrixOfCofactors);
 				return FAILURE;
 			}
-			Matrix* pSubMatrix = (Matrix*)hSubMatrix;
+			Matrix* pSubMatrix = hSubMatrix;
 
 			// get the submatrix
 			int subMatrix_row = 0;
@@ -1115,7 +1115,7 @@ Status linestringToArray(const char* line, long double* a, int aSize) {
 
 
 int at(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds) {
-	Matrix* pMatrix = (Matrix*)hMatrix;
+	Matrix* pMatrix = hMatrix;
 
 	// out of bounds
 	if (row >= pMatrix->rows || column >= pMatrix->columns) {
@@ -1133,7 +1133,7 @@ int at(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds) {
 
 
 Status adjustMatrixDimensions(Matrix** ppMatrix, int rows, int columns) {
-	Matrix* pMatrix = (Matrix*)*ppMatrix;
+	Matrix* pMatrix = *ppMatrix;
 	MATRIX hNewMatrix;
 	long double* matrix;
 
@@ -1141,7 +1141,7 @@ Status adjustMatrixDimensions(Matrix** ppMatrix, int rows, int columns) {
 	if (!pMatrix) {
 		if (!(hNewMatrix = matrix_init(rows, columns)))
 			return FAILURE;
-		*ppMatrix = (Matrix*)hNewMatrix;
+		*ppMatrix = hNewMatrix;
 	}
 	// the matrix object exists but its dimensions are incorrect
 	else if (pMatrix->rows != rows || pMatrix->columns != columns) {
