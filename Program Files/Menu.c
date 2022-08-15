@@ -28,7 +28,7 @@ POSTCONDITION
   - Returns TRUE, else FALSE for any invalid input.
   - Invalid input - Anything other than a single integer in that range of [0, 7]
 */
-Boolean menuChoiceIsValid(const char* line, int rangeStart, int rangeEnd);
+static Boolean menuChoiceIsValid(const char* line, int rangeStart, int rangeEnd);
 
 
 
@@ -573,6 +573,6 @@ Status menu_matrixInverse(void) {
 
 
 /***** helper functions declared in this file *****/
-Boolean menuChoiceIsValid(const char* line, int rangeStart, int rangeEnd) {
+static Boolean menuChoiceIsValid(const char* line, int rangeStart, int rangeEnd) {
 	return inputIsValidUnsignedInt(line, 1) && atoi(line) >= rangeStart && atoi(line) <= rangeEnd;
 }
