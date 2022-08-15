@@ -15,6 +15,7 @@
 #include "Matrix.h"
 
 
+/***** Global variables and structures *****/
 typedef struct matrix {
 	long double* matrix;        // 2D array
 	int rows;                   // total rows
@@ -22,25 +23,14 @@ typedef struct matrix {
 	int maxLength;              // max width of a number out of the entire array i.e -425.73 has a width of 7 (5 numbers, '.', and '-')
 } Matrix;
 
-
-// the various matrix operations that can be performed
+// The various matrix operations that can be performed
 const char* operations[] = { "multiplication", "addition", "subtraction", "power", "transpose", "determinant",  "inverse" };
 const int operationsSize = sizeof(operations) / sizeof(*operations);
 
 
-/***** helper functions defined in this file *****/
-/*
-PRECONDITION
-  - n is any integer
-  - append is the character array to hold the append string. It has a capacity of 3 with a null terminator
-	at index 2.
-POSTCONDITION
-  - Based on what n is, append now holds the append string.
-	For example, if n is 21 the append string is "st" for 21st.
-*/
-void numberAppender(int n, char* append);
 
 
+/***** Helper functions used only in this file *****/
 /*
 PRECONDITION
   - n is any double
@@ -112,28 +102,6 @@ static Boolean inputIsValidDouble(const char* line, int expectedNumbers);
 
 /*
 PRECONDITION
-  - line is a string containing any amount of potentially valid positive integers.
-  - expectedNumbers is the expected amount of positive integers to be found in the line.
-POSTCONDITION
-  - Returns TRUE if the input is valid, else FALSE.
-  - Valid input is integers > 0, and the amount of integers entered matches expectedNumbers.
-*/
-Boolean inputIsValidPositiveInt(const char* line, int expectedNumbers);
-
-
-/*
-PRECONDITION
-  - line is a string containing any amount of potentially valid unsigned integers.
-  - expectedNumbers is the expected amount of unsigned integers to be found in the line.
-POSTCONDITION
-  - Returns TRUE if the input is valid, else FALSE.
-  - Valid input is integers >= 0, and the amount of integers entered matches expectedNumbers.
-*/
-Boolean inputIsValidUnsignedInt(const char* line, int expectedNumbers);
-
-
-/*
-PRECONDITION
   - line is a string containing only floating point numbers.
   - aSize is an array of doubles.
   - size is the size of the array a.
@@ -174,7 +142,46 @@ POSTCONDITION:
 static Status adjustMatrixDimensions(Matrix** ppMatrix, int rows, int columns);
 
 
-/***** functions declared in Matrix.h *****/
+
+
+/***** Helper functions used in this file and Menu.c *****/
+/*
+PRECONDITION
+  - n is any integer
+  - append is the character array to hold the append string. It has a capacity of 3 with a null terminator
+	at index 2.
+POSTCONDITION
+  - Based on what n is, append now holds the append string.
+	For example, if n is 21 the append string is "st" for 21st.
+*/
+void numberAppender(int n, char* append);
+
+
+/*
+PRECONDITION
+  - line is a string containing any amount of potentially valid positive integers.
+  - expectedNumbers is the expected amount of positive integers to be found in the line.
+POSTCONDITION
+  - Returns TRUE if the input is valid, else FALSE.
+  - Valid input is integers > 0, and the amount of integers entered matches expectedNumbers.
+*/
+Boolean inputIsValidPositiveInt(const char* line, int expectedNumbers);
+
+
+/*
+PRECONDITION
+  - line is a string containing any amount of potentially valid unsigned integers.
+  - expectedNumbers is the expected amount of unsigned integers to be found in the line.
+POSTCONDITION
+  - Returns TRUE if the input is valid, else FALSE.
+  - Valid input is integers >= 0, and the amount of integers entered matches expectedNumbers.
+*/
+Boolean inputIsValidUnsignedInt(const char* line, int expectedNumbers);
+
+
+
+
+/***** Functions declared in Matrix.h *****/
 MATRIX matrix_init(int rows, int columns) {
 	Matrix* pMatrix = malloc(sizeof(*pMatrix));
 	if (pMatrix) {
@@ -692,36 +699,7 @@ void matrix_destroy(MATRIX* phMatrix) {
 
 
 
-/***** helper functions declared in this file. *****/
-void numberAppender(int n, char* append) {
-	// special case
-	if (n >= 4 && n <= 20) {
-		append[0] = 't';
-		append[1] = 'h';
-	}
-	// st i.e. 21st
-	else if ((n - 1) % 10 == 0) {
-		append[0] = 's';
-		append[1] = 't';
-	}
-	// nd i.e. 22nd
-	else if ((n - 2) % 10 == 0) {
-		append[0] = 'n';
-		append[1] = 'd';
-	}
-	// rd i.e 23rd
-	else if ((n - 3) % 10 == 0) {
-		append[0] = 'r';
-		append[1] = 'd';
-	}
-	// th i.e. 20th, 24th, 25th, 26th etc.
-	else {
-		append[0] = 't';
-		append[1] = 'h';
-	}
-}
-
-
+/***** Helper functions used only in this file *****/
 static int calcNumLength(long double n) {
 	char numString[20];
 	int nInt = (int)floor(n);
@@ -1015,83 +993,6 @@ static Boolean inputIsValidDouble(const char* line, int expectedNumbers) {
 }
 
 
-Boolean inputIsValidPositiveInt(const char* line, int expectedNumbers) {
-	// user only pressed "enter" or whitespace followed by "enter" - space is the only valid whitespace character
-	int i = 0;
-	while (isspace(line[i])) {
-		if (line[i] != ' ')
-			return FALSE;
-		++i;
-	}
-	if (line[i] == '\0')
-		return FALSE;
-
-	// validate it's all numbers or spaces
-	while (line[i] != '\0') {
-		// something other than a digit or space
-		if (!isdigit(line[i]) && line[i] != ' ')
-			return FALSE;
-		++i;
-	}
-
-
-	// input has been validated - now verify an appropriate amount of numbers has been entered and that none of the numbers are 0.
-	char singleNumStr[50];
-	int singleNumInt;
-	int idx = 0;
-	int totalNumbers = 0;
-	i = 0;
-	while (line[i] != '\0') {
-		while (line[i] != ' ' && line[i] != '\0')
-			singleNumStr[idx++] = line[i++];
-		singleNumStr[idx] = '\0';
-		idx = 0;
-		singleNumInt = atoi(singleNumStr);
-		if (singleNumInt == 0)
-			return FALSE;
-		++totalNumbers;
-		if (line[i] != '\0')
-			++i;
-	}
-
-	return totalNumbers == expectedNumbers;
-}
-
-
-Boolean inputIsValidUnsignedInt(const char* line, int expectedNumbers) {
-	// user only pressed "enter" or whitespace followed by "enter" - space is the only valid whitespace character
-	int i = 0;
-	while (isspace(line[i])) {
-		if (line[i] != ' ')
-			return FALSE;
-		++i;
-	}
-	if (line[i] == '\0')
-		return FALSE;
-
-	// validate it's all numbers in the correct format
-	while (line[i] != '\0') {
-		// something other than a digit or space
-		if (!isdigit(line[i]) && line[i] != ' ')
-			return FALSE;
-		++i;
-	}
-
-	// input has been validated - now verify an appropriate amount of numbers has been entered
-	int totalNumbers = 0;
-	i = 0;
-	while (line[i] != '\0') {
-		while (line[i] != ' ' && line[i] != '\0')
-			++i;
-		++totalNumbers;
-		if (line[i] != '\0')
-			++i;
-	}
-
-	return totalNumbers == expectedNumbers;
-}
-
-
 static Status linestringToArray(const char* line, long double* a, int aSize) {
 	char singleNum[50];        // buffer to hold a single number from the line
 	int i = 0;                 // index for line
@@ -1155,4 +1056,115 @@ static Status adjustMatrixDimensions(Matrix** ppMatrix, int rows, int columns) {
 	}
 
 	return SUCCESS;
+}
+
+
+
+
+/***** Helper functions used in this file and Menu.c *****/
+void numberAppender(int n, char* append) {
+	// special case
+	if (n >= 4 && n <= 20) {
+		append[0] = 't';
+		append[1] = 'h';
+	}
+	// st i.e. 21st
+	else if ((n - 1) % 10 == 0) {
+		append[0] = 's';
+		append[1] = 't';
+	}
+	// nd i.e. 22nd
+	else if ((n - 2) % 10 == 0) {
+		append[0] = 'n';
+		append[1] = 'd';
+	}
+	// rd i.e 23rd
+	else if ((n - 3) % 10 == 0) {
+		append[0] = 'r';
+		append[1] = 'd';
+	}
+	// th i.e. 20th, 24th, 25th, 26th etc.
+	else {
+		append[0] = 't';
+		append[1] = 'h';
+	}
+}
+
+
+
+Boolean inputIsValidPositiveInt(const char* line, int expectedNumbers) {
+	// user only pressed "enter" or whitespace followed by "enter" - space is the only valid whitespace character
+	int i = 0;
+	while (isspace(line[i])) {
+		if (line[i] != ' ')
+			return FALSE;
+		++i;
+	}
+	if (line[i] == '\0')
+		return FALSE;
+
+	// validate it's all numbers or spaces
+	while (line[i] != '\0') {
+		// something other than a digit or space
+		if (!isdigit(line[i]) && line[i] != ' ')
+			return FALSE;
+		++i;
+	}
+
+
+	// input has been validated - now verify an appropriate amount of numbers has been entered and that none of the numbers are 0.
+	char singleNumStr[50];
+	int singleNumInt;
+	int idx = 0;
+	int totalNumbers = 0;
+	i = 0;
+	while (line[i] != '\0') {
+		while (line[i] != ' ' && line[i] != '\0')
+			singleNumStr[idx++] = line[i++];
+		singleNumStr[idx] = '\0';
+		idx = 0;
+		singleNumInt = atoi(singleNumStr);
+		if (singleNumInt == 0)
+			return FALSE;
+		++totalNumbers;
+		if (line[i] != '\0')
+			++i;
+	}
+
+	return totalNumbers == expectedNumbers;
+}
+
+
+
+Boolean inputIsValidUnsignedInt(const char* line, int expectedNumbers) {
+	// user only pressed "enter" or whitespace followed by "enter" - space is the only valid whitespace character
+	int i = 0;
+	while (isspace(line[i])) {
+		if (line[i] != ' ')
+			return FALSE;
+		++i;
+	}
+	if (line[i] == '\0')
+		return FALSE;
+
+	// validate it's all numbers in the correct format
+	while (line[i] != '\0') {
+		// something other than a digit or space
+		if (!isdigit(line[i]) && line[i] != ' ')
+			return FALSE;
+		++i;
+	}
+
+	// input has been validated - now verify an appropriate amount of numbers has been entered
+	int totalNumbers = 0;
+	i = 0;
+	while (line[i] != '\0') {
+		while (line[i] != ' ' && line[i] != '\0')
+			++i;
+		++totalNumbers;
+		if (line[i] != '\0')
+			++i;
+	}
+
+	return totalNumbers == expectedNumbers;
 }
