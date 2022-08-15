@@ -49,7 +49,7 @@ POSTCONDITION
 	If it's an integer this will just be the length of the integer (i.e. 1024 = length 4).
 	If it's floating point, then it will not include trailing zeros.
 */
-int calcNumLength(long double n);
+static int calcNumLength(long double n);
 
 
 /*
@@ -59,7 +59,7 @@ POSTCONDITION
   - Removes trailing zeroes from the string representation of a number.
 	For example, the string "24.1720000" becomes "24.172".
 */
-void removeTrailingZeroes(char* numString);
+static void removeTrailingZeroes(char* numString);
 
 
 /*
@@ -69,7 +69,7 @@ POSTCONDITION
   - Returns the derminant of a 2 x 2 matrix. In a 2 x 2 matrix, the entries
 	a11, a12, a21, and a22 are at indices 00, 01, 10, and 11 respectively.
 */
-long double calculate2x2determinate(long double a11, long double a12, long double a21, long double a22);
+static long double calculate2x2determinate(long double a11, long double a12, long double a21, long double a22);
 
 
 /*
@@ -83,7 +83,7 @@ POSTCONDITION
   - The mathematical definition of the determinant is recursive so this function implements the recursion.
 	It calls calculate2x2determinate in its base case which returns the determinant of each individual 2 x 2 submatrix.
 */
-long double calculateDeterminate(Matrix* pMatrix, Status* pMemoryAllocation);
+static long double calculateDeterminate(Matrix* pMatrix, Status* pMemoryAllocation);
 
 
 /*
@@ -96,7 +96,7 @@ POSTCONDITION
 	For a 2 x 2 matrix, the adjugate matrix does not involve the transpose. It is a special case handled separately.
   - Returns SUCCESS, else FAILURE for any memory allocation failure.
 */
-Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult);
+static Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult);
 
 
 /*
@@ -107,7 +107,7 @@ POSTCONDITION
   - Returns TRUE if the input is valid, else FALSE.
   - Valid input is all valid floating point numbers, and the amount of numbers entered matches expectedNumbers.
 */
-Boolean inputIsValidDouble(const char* line, int expectedNumbers);
+static Boolean inputIsValidDouble(const char* line, int expectedNumbers);
 
 
 /*
@@ -142,7 +142,7 @@ POSTCONDITION
   - Returns FAILURE if the index of the array goes out of bounds in the case where the amount
 	of numbers in line is greater than size.
 */
-Status linestringToArray(const char* line, long double* a, int aSize);
+static Status linestringToArray(const char* line, long double* a, int aSize);
 
 
 /*
@@ -158,7 +158,7 @@ POSTCONDITION
   - If pOutOfBounds is NULL, then it is ignored. This is for cases where it's known it won't be out of bounds which happens
 	consistently in this program. The checking for out of bounds is just an additional optional feature.
 */
-int at(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds);
+static int at(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds);
 
 
 /*
@@ -171,7 +171,7 @@ POSTCONDITION:
 	is created to adjust it to the proper dimensions.
   - Returns SUCCESS, else FAILURE for any memory allocation failure.
 */
-Status adjustMatrixDimensions(Matrix** ppMatrix, int rows, int columns);
+static Status adjustMatrixDimensions(Matrix** ppMatrix, int rows, int columns);
 
 
 /***** functions declared in Matrix.h *****/
@@ -722,7 +722,7 @@ void numberAppender(int n, char* append) {
 }
 
 
-int calcNumLength(long double n) {
+static int calcNumLength(long double n) {
 	char numString[20];
 	int nInt = (int)floor(n);
 
@@ -741,7 +741,7 @@ int calcNumLength(long double n) {
 }
 
 
-void removeTrailingZeroes(char* numString) {
+static void removeTrailingZeroes(char* numString) {
 	int i;
 	Boolean reachedDecimalPoint = FALSE;
 
@@ -755,12 +755,12 @@ void removeTrailingZeroes(char* numString) {
 }
 
 
-long double calculate2x2determinate(long double a11, long double a12, long double a21, long double a22) {
+static long double calculate2x2determinate(long double a11, long double a12, long double a21, long double a22) {
 	return a11 * a22 - a21 * a12;
 }
 
 
-long double calculateDeterminate(Matrix* pMatrix, Status* pMemoryAllocation) {
+static long double calculateDeterminate(Matrix* pMatrix, Status* pMemoryAllocation) {
 	// base case: 2 x 2 matrix
 	if (pMatrix->rows == 2 && pMatrix->columns == 2) {
 		long double a11 = pMatrix->matrix[at((MATRIX)pMatrix, 0, 0, NULL)];
@@ -811,7 +811,7 @@ long double calculateDeterminate(Matrix* pMatrix, Status* pMemoryAllocation) {
 }
 
 
-Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult) {
+static Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult) {
 	MATRIX hMatrixOfCofactors = NULL;        // the adjugate is the transpose of the matrix of cofactors
 
 	// recreate the result matrix if its dimensions aren't appropriate for the adjugate or it's NULL
@@ -926,7 +926,7 @@ Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult) {
 }
 
 
-Boolean inputIsValidDouble(const char* line, int expectedNumbers) {
+static Boolean inputIsValidDouble(const char* line, int expectedNumbers) {
 	Boolean negativeAlreadyExists = FALSE;
 	Boolean decimalPointAlreadyExists = FALSE;
 
@@ -1092,7 +1092,7 @@ Boolean inputIsValidUnsignedInt(const char* line, int expectedNumbers) {
 }
 
 
-Status linestringToArray(const char* line, long double* a, int aSize) {
+static Status linestringToArray(const char* line, long double* a, int aSize) {
 	char singleNum[50];        // buffer to hold a single number from the line
 	int i = 0;                 // index for line
 	int j = 0;                 // index for singleNum
@@ -1114,7 +1114,7 @@ Status linestringToArray(const char* line, long double* a, int aSize) {
 }
 
 
-int at(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds) {
+static int at(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds) {
 	Matrix* pMatrix = hMatrix;
 
 	// out of bounds
@@ -1132,7 +1132,7 @@ int at(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds) {
 }
 
 
-Status adjustMatrixDimensions(Matrix** ppMatrix, int rows, int columns) {
+static Status adjustMatrixDimensions(Matrix** ppMatrix, int rows, int columns) {
 	Matrix* pMatrix = *ppMatrix;
 	MATRIX hNewMatrix;
 	long double* matrix;
