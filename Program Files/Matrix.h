@@ -18,7 +18,7 @@
 typedef void* MATRIX;                // opaque object handle for matrix objects
 #define OUT_OF_BOUNDS -909090        // error code for going out of bounds of a matrix object's array
 
-extern const char* operations[];    // the various matrix operations that can be performed
+extern const char* operations[];     // the various matrix operations that can be performed
 extern const int operationsSize;
 
 
