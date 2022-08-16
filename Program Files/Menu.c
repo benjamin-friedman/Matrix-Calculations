@@ -13,13 +13,7 @@
 #include "Menu.h"
 
 
-/***** helper functions defined in Matrix.c *****/
-void numberAppender(int n, char* append);
-Boolean inputIsValidPositiveInt(const char* line, int expectedNumbers);
-Boolean inputIsValidUnsignedInt(const char* line, int expectedNumbers);
-
-
-/***** helper functions defined in this file *****/
+/***** Helper functions used only in this file *****/
 /*
 PRECONDITION
   - line is a string holding the user's input for the choice from the menu.
@@ -33,7 +27,15 @@ static Boolean menuChoiceIsValid(const char* line, int rangeStart, int rangeEnd)
 
 
 
-/***** functions declared in Menu.h *****/
+/***** Helper functions defined in Matrix.c *****/
+void numberAppender(int n, char* append);
+Boolean inputIsValidPositiveInt(const char* line, int expectedNumbers);
+Boolean inputIsValidUnsignedInt(const char* line, int expectedNumbers);
+
+
+
+
+/***** Functions declared in Menu.h *****/
 void menu_displayMenu(void) {
 	printf("------ MENU ------\n");
 	for (int i = 0; i < operationsSize; ++i)
@@ -41,6 +43,7 @@ void menu_displayMenu(void) {
 	printf("0) quit\n\n");
 	printf("Enter the number of the operation to perform or enter 0 to quit.\nChoice: ");
 }
+
 
 
 int menu_getUserChoice(void) {
@@ -61,6 +64,7 @@ int menu_getUserChoice(void) {
 
 	return userChoice;
 }
+
 
 
 Status menu_matrixMultiplication(void) {
@@ -159,6 +163,7 @@ Status menu_matrixMultiplication(void) {
 }
 
 
+
 Status menu_matrixAddition(void) {
 	int rows, columns;                // dimensions of the matrices
 	int numMatrices;                  // number of matrices
@@ -246,6 +251,7 @@ Status menu_matrixAddition(void) {
 
 	return SUCCESS;
 }
+
 
 
 Status menu_matrixSubtraction(void) {
@@ -337,6 +343,7 @@ Status menu_matrixSubtraction(void) {
 }
 
 
+
 Status menu_matrixPower(void) {
 	int rows, columns, power;        // power and dimensions of the matrix
 	char line[500];                  // buffer to get line of user input
@@ -400,6 +407,7 @@ Status menu_matrixPower(void) {
 }
 
 
+
 Status menu_matrixTranspose(void) {
 	int rows, columns;              // dimensions of the matrix
 	Status validInput;              // valid input for the matrix dimensions and entries
@@ -452,6 +460,7 @@ Status menu_matrixTranspose(void) {
 }
 
 
+
 Status menu_matrixDeterminant(void) {
 	int rows, columns;              // dimensions of the matrix
 	long double determinant;        // the result of the determinant operation
@@ -501,6 +510,7 @@ Status menu_matrixDeterminant(void) {
 
 	return SUCCESS;
 }
+
 
 
 Status menu_matrixInverse(void) {
@@ -572,7 +582,7 @@ Status menu_matrixInverse(void) {
 
 
 
-/***** helper functions declared in this file *****/
+/***** Helper functions used only in this file *****/
 static Boolean menuChoiceIsValid(const char* line, int rangeStart, int rangeEnd) {
 	return inputIsValidUnsignedInt(line, 1) && atoi(line) >= rangeStart && atoi(line) <= rangeEnd;
 }
