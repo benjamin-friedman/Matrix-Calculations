@@ -198,6 +198,7 @@ MATRIX matrix_init(int rows, int columns) {
 }
 
 
+
 Status matrix_getDimensions(int* pRows, int* pColumns, int n, const char* operation) {
 	char append[3] = { '\0' };        // holds "st" for 1st, "nd" for 2nd etc.
 	char line[500];                   // buffer for line of user input
@@ -244,6 +245,7 @@ Status matrix_getDimensions(int* pRows, int* pColumns, int n, const char* operat
 }
 
 
+
 Status matrix_getNumMatrices(const char* operation, int* pNumMatrices) {
 	char line[500];        // holds line of user input
 
@@ -261,9 +263,11 @@ Status matrix_getNumMatrices(const char* operation, int* pNumMatrices) {
 }
 
 
+
 Boolean matrix_canBeMultipliedD(int columns1, int rows2) {
 	return columns1 == rows2;
 }
+
 
 
 Boolean matrix_canBeMultipliedM(MATRIX hMatrix1, MATRIX hMatrix2) {
@@ -271,6 +275,7 @@ Boolean matrix_canBeMultipliedM(MATRIX hMatrix1, MATRIX hMatrix2) {
 	Matrix* pMatrix2 = hMatrix2;
 	return pMatrix1->columns == pMatrix2->rows;
 }
+
 
 
 Status matrix_fillInput(MATRIX hMatrix, Status* pMemoryAllocation) {
@@ -328,6 +333,7 @@ Status matrix_fillInput(MATRIX hMatrix, Status* pMemoryAllocation) {
 }
 
 
+
 void matrix_fillPrompt(MATRIX hMatrix, int matrixNumber) {
 	Matrix* pMatrix = hMatrix;
 	char append[3] = { '\0' };
@@ -339,6 +345,7 @@ void matrix_fillPrompt(MATRIX hMatrix, int matrixNumber) {
 	}
 	printf("%d x %d matrix with each row separated by a newline.\n", pMatrix->rows, pMatrix->columns);
 }
+
 
 
 Status matrix_multiply(MATRIX hMatrix1, MATRIX hMatrix2, MATRIX* phResult) {
@@ -382,6 +389,7 @@ Status matrix_multiply(MATRIX hMatrix1, MATRIX hMatrix2, MATRIX* phResult) {
 }
 
 
+
 Status matrix_add(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult) {
 	Matrix* pMatrixToAdd = hMatrices[0];        // first matrix being added
 
@@ -419,6 +427,7 @@ Status matrix_add(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult) {
 
 	return SUCCESS;
 }
+
 
 
 Status matrix_subtract(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult) {
@@ -461,6 +470,7 @@ Status matrix_subtract(MATRIX* hMatrices, int hMatricesSize, MATRIX* phResult) {
 
 	return SUCCESS;
 }
+
 
 
 Status matrix_power(MATRIX hMatrix, int power, MATRIX* phResult) {
@@ -506,6 +516,7 @@ Status matrix_power(MATRIX hMatrix, int power, MATRIX* phResult) {
 }
 
 
+
 Status matrix_transpose(MATRIX hMatrix, MATRIX* phResult) {
 	Matrix* pMatrix = hMatrix;        // the matrix being transposed
 
@@ -525,6 +536,7 @@ Status matrix_transpose(MATRIX hMatrix, MATRIX* phResult) {
 }
 
 
+
 long double matrix_determinant(MATRIX hMatrix, Status* pMemoryAllocation) {
 	Matrix* pMatrix = hMatrix;
 	*pMemoryAllocation = SUCCESS;
@@ -536,6 +548,7 @@ long double matrix_determinant(MATRIX hMatrix, Status* pMemoryAllocation) {
 	// all other matrices - 2 x 2, 3 x 3 etc.
 	return calculateDeterminate(pMatrix, pMemoryAllocation);
 }
+
 
 
 Status matrix_inverse(MATRIX hMatrix, MATRIX* phResult, Boolean* pMatrixIsVertible) {
@@ -584,11 +597,13 @@ Status matrix_inverse(MATRIX hMatrix, MATRIX* phResult, Boolean* pMatrixIsVertib
 }
 
 
+
 Boolean matrix_canBeAdded(MATRIX hMatrix1, MATRIX hMatrix2) {
 	Matrix* pMatrix1 = hMatrix1;
 	Matrix* pMatrix2 = hMatrix2;
 	return pMatrix1->rows == pMatrix2->rows && pMatrix1->columns == pMatrix2->columns;
 }
+
 
 
 void matrix_print(MATRIX hMatrix) {
@@ -631,6 +646,7 @@ void matrix_print(MATRIX hMatrix) {
 }
 
 
+
 long double matrix_getEntry(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds) {
 	Matrix* pMatrix = hMatrix;
 
@@ -638,6 +654,7 @@ long double matrix_getEntry(MATRIX hMatrix, int row, int column, Boolean* pOutOf
 
 	return (*pOutOfBounds) ? OUT_OF_BOUNDS : entry;
 }
+
 
 
 Status matrix_setEntry(MATRIX hMatrix, long double newEntry, int row, int column) {
@@ -652,6 +669,7 @@ Status matrix_setEntry(MATRIX hMatrix, long double newEntry, int row, int column
 
 	return SUCCESS;
 }
+
 
 
 Status matrix_assignment(MATRIX hMatrix, MATRIX* phResult) {
@@ -687,6 +705,7 @@ Status matrix_assignment(MATRIX hMatrix, MATRIX* phResult) {
 }
 
 
+
 void matrix_destroy(MATRIX* phMatrix) {
 	Matrix* pMatrix = *phMatrix;
 	if (pMatrix) {
@@ -719,6 +738,7 @@ static int calcNumLength(long double n) {
 }
 
 
+
 static void removeTrailingZeroes(char* numString) {
 	int i;
 	Boolean reachedDecimalPoint = FALSE;
@@ -733,9 +753,11 @@ static void removeTrailingZeroes(char* numString) {
 }
 
 
+
 static long double calculate2x2determinate(long double a11, long double a12, long double a21, long double a22) {
 	return a11 * a22 - a21 * a12;
 }
+
 
 
 static long double calculateDeterminate(Matrix* pMatrix, Status* pMemoryAllocation) {
@@ -787,6 +809,7 @@ static long double calculateDeterminate(Matrix* pMatrix, Status* pMemoryAllocati
 
 	return sum;
 }
+
 
 
 static Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult) {
@@ -904,6 +927,7 @@ static Status calculateAdjugateMatrix(Matrix* pMatrix, Matrix** ppResult) {
 }
 
 
+
 static Boolean inputIsValidDouble(const char* line, int expectedNumbers) {
 	Boolean negativeAlreadyExists = FALSE;
 	Boolean decimalPointAlreadyExists = FALSE;
@@ -993,6 +1017,7 @@ static Boolean inputIsValidDouble(const char* line, int expectedNumbers) {
 }
 
 
+
 static Status linestringToArray(const char* line, long double* a, int aSize) {
 	char singleNum[50];        // buffer to hold a single number from the line
 	int i = 0;                 // index for line
@@ -1015,6 +1040,7 @@ static Status linestringToArray(const char* line, long double* a, int aSize) {
 }
 
 
+
 static int at(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds) {
 	Matrix* pMatrix = hMatrix;
 
@@ -1031,6 +1057,7 @@ static int at(MATRIX hMatrix, int row, int column, Boolean* pOutOfBounds) {
 
 	return row * pMatrix->columns + column;
 }
+
 
 
 static Status adjustMatrixDimensions(Matrix** ppMatrix, int rows, int columns) {
