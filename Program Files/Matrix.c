@@ -144,7 +144,7 @@ static Status adjustMatrixDimensions(Matrix** ppMatrix, int rows, int columns);
 
 
 
-/***** Helper functions used in this file and Menu.c *****/
+/***** Helper functions used in this file and Menu.c - definitions are in this file *****/
 /*
 PRECONDITION
   - n is any integer
