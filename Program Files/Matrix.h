@@ -24,6 +24,7 @@ extern const int operationsSize;
 
 
 
+/***** Functions defined in Matrix.c *****/
 /*
 PRECONDITION
   - rows/columns are the desired dimensions of the new matrix and are >= 1.
