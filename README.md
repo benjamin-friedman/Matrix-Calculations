@@ -14,4 +14,4 @@ Console application written in C for doing matrix calculations.
 - Menu.h/Menu.c - Interface that interacts directly with the main program to facilitate the implementation of each matrix operation.
 - Matrix.h/Matrix.c - Matrix interface that implements the matrix operations.
 - Status.h - Header file for Boolean and Status enums.
-- Makefile - For compiling the program in Linux.
+- Makefile - For compiling the program.
