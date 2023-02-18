@@ -197,7 +197,7 @@ Status menu_matrixAddition(void) {
 	for (int i = 0; i < numMatrices; ++i) {
 		if (!(hMatrices[i] = matrix_init(rows, columns))) {
 			if (i > 0) {
-				for (; i >= 0; i--)
+				for (; i >= 0; --i)
 					matrix_destroy(&hMatrices[i]);
 			}
 			free(hMatrices);
@@ -287,7 +287,7 @@ Status menu_matrixSubtraction(void) {
 	for (int i = 0; i < numMatrices; ++i) {
 		if (!(hMatrices[i] = matrix_init(rows, columns))) {
 			if (i > 0) {
-				for (; i >= 0; i--)
+				for (; i >= 0; --i)
 					matrix_destroy(&hMatrices[i]);
 			}
 			free(hMatrices);

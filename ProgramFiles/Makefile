@@ -5,7 +5,7 @@
 
 
 CC = gcc
-CFLAGS = -std=c99 -Wall -Wextra -Wpedantic #-Og -g -fsanitize=undefined
+CFLAGS = -std=c11 -Wall -Wextra -Wpedantic #-Og -g -fsanitize=undefined
 LDLIBS = -lm
 EXE1 = MatrixCalculations
 OBJ1 = Main.o Matrix.o Menu.o

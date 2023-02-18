@@ -631,7 +631,7 @@ void matrix_print(MATRIX hMatrix) {
 
 			while (extraSpaces > 0) {
 				printf(" ");
-				extraSpaces--;
+				--extraSpaces;
 			}
 			printf("  ");
 			if (j == pMatrix->columns - 1)
@@ -720,7 +720,7 @@ void matrix_destroy(MATRIX* phMatrix) {
 
 /***** Helper functions used only in this file *****/
 static int calcNumLength(long double n) {
-	char numString[20];
+	char numString[50];
 	int nInt = (int)floor(n);
 
 	if (nInt == n) {
@@ -730,9 +730,8 @@ static int calcNumLength(long double n) {
 	else
 		sprintf(numString, "%Lf", n);
 	int totalChars = strlen(numString);
-	for (int i = strlen(numString) - 1; numString[i] == '0' || numString[i] == '.'; i--) {
-		totalChars--;
-	}
+	for (int i = strlen(numString) - 1; numString[i] == '0' || numString[i] == '.'; --i)
+		--totalChars;
 
 	return totalChars;
 }
@@ -743,7 +742,7 @@ static void removeTrailingZeroes(char* numString) {
 	int i;
 	Boolean reachedDecimalPoint = FALSE;
 
-	for (i = strlen(numString) - 1; i >= 0 && (numString[i] == '0' || numString[i] == '.'); i--) {
+	for (i = strlen(numString) - 1; i >= 0 && (numString[i] == '0' || numString[i] == '.'); --i) {
 		if (reachedDecimalPoint == TRUE)
 			break;
 		if (numString[i] == '.')
